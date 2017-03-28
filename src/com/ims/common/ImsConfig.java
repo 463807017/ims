@@ -1,5 +1,7 @@
 package com.ims.common;
 
+import com.ims.User.UserController;
+import com.ims.User.UserInterceptor;
 import com.ims.blog.BlogController;
 import com.ims.common.model._MappingKit;
 import com.ims.index.IndexController;
@@ -40,6 +42,7 @@ public class ImsConfig extends JFinalConfig {
 	public void configRoute(Routes me) {
 		me.add("/", IndexController.class, "/index");	// 第三个参数为该Controller的视图存放路径
 		me.add("/blog", BlogController.class); // 第三个参数省略时默认与第一个参数值相同，在此即为 "/blog"
+		me.add("/user", UserController.class); 
 	}
 	
 	public void configEngine(Engine me) {
@@ -70,6 +73,8 @@ public class ImsConfig extends JFinalConfig {
 	 * 配置全局拦截器
 	 */
 	public void configInterceptor(Interceptors me) {
+		//登录检查
+		me.add(new UserInterceptor());
 		//事务拦截器
 		me.add(new TxByMethodRegex("(.*save.*|.*update.*)"));
 		//错误信息页面

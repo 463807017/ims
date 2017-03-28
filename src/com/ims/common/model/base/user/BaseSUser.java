@@ -44,5 +44,14 @@ public abstract class BaseSUser<M extends BaseSUser<M>> extends Model<M> impleme
 	public java.lang.String getLoginPasswd() {
 		return get("login_passwd");
 	}
+	
+	public M setInputTime(java.lang.String inputTime) {
+		set("input_time", inputTime);
+		return (M)this;
+	}
+
+	public java.lang.String getsetInputTime() {
+		return get("input_time");
+	}
 
 }

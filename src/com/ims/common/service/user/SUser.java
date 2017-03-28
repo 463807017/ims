@@ -1,6 +1,8 @@
 package com.ims.common.service.user;
 
+import com.ims.common.model.Blog;
 import com.ims.common.model.base.user.BaseSUser;
+import com.jfinal.plugin.activerecord.Page;
 
 
 /**
@@ -9,4 +11,8 @@ import com.ims.common.model.base.user.BaseSUser;
 @SuppressWarnings("serial")
 public class SUser extends BaseSUser<SUser> {
 	public static final SUser dao = new SUser().dao();
+	
+	public Page<SUser> paginate(int pageNumber, int pageSize) {
+		return paginate(pageNumber, pageSize, "select *", "from s_user order by id desc");
+	}
 }

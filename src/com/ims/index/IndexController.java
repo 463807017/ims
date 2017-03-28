@@ -14,10 +14,11 @@ import com.jfinal.plugin.activerecord.SqlPara;
  * IndexController
  */
 public class IndexController extends Controller {
+	@Clear
 	public void index() {
 		render("/WEB-INF/mvcs/login/login.html");
 	}
-	
+	@Clear
 	public void login() throws Exception{
 		SUser user = getModel(SUser.class);
 		System.out.println(this.hashCode());

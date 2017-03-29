@@ -1,4 +1,4 @@
-package com.ims.common.service.user;
+package com.ims.common.service;
 
 import com.ims.common.model.base.BaseBlog;
 

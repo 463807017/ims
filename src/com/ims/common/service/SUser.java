@@ -1,7 +1,6 @@
-package com.ims.common.service.user;
+package com.ims.common.service;
 
-import com.ims.common.model.Blog;
-import com.ims.common.model.base.user.BaseSUser;
+import com.ims.common.model.base.BaseSUser;
 import com.jfinal.plugin.activerecord.Page;
 
 

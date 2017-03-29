@@ -3,7 +3,6 @@ package com.ims.common;
 import com.ims.User.UserController;
 import com.ims.User.UserInterceptor;
 import com.ims.blog.BlogController;
-import com.ims.common.model._MappingKit;
 import com.ims.index.IndexController;
 import com.ims.interceptor.ExceptionInterceptor;
 import com.ims.role.RoleController;

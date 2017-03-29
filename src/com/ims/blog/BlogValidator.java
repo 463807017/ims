@@ -1,6 +1,6 @@
 package com.ims.blog;
 
-import com.ims.common.model.Blog;
+import com.ims.common.service.Blog;
 import com.jfinal.core.Controller;
 import com.jfinal.validate.Validator;
 

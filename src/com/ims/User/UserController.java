@@ -1,7 +1,7 @@
 package com.ims.User;
 
 
-import com.ims.common.service.user.SUser;
+import com.ims.common.service.SUser;
 import com.ims.util.StringUtil;
 import com.jfinal.core.Controller;
 

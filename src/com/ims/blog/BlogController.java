@@ -1,6 +1,6 @@
 package com.ims.blog;
 
-import com.ims.common.model.Blog;
+import com.ims.common.service.Blog;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 
@@ -14,7 +14,7 @@ import com.jfinal.core.Controller;
 @Before(BlogInterceptor.class)
 public class BlogController extends Controller {
 	public void index() {
-		setAttr("blogPage", Blog.me.paginate(getParaToInt(0, 1), 10));
+//		setAttr("blogPage", Blog.dao.paginate(getParaToInt(0, 1), 10));
 		render("blog.html");
 	}
 	
@@ -28,7 +28,7 @@ public class BlogController extends Controller {
 	}
 	
 	public void edit() {
-		setAttr("blog", Blog.me.findById(getParaToInt()));
+		setAttr("blog", Blog.dao.findById(getParaToInt()));
 	}
 	
 	@Before(BlogValidator.class)
@@ -38,7 +38,7 @@ public class BlogController extends Controller {
 	}
 	
 	public void delete() {
-		Blog.me.deleteById(getParaToInt());
+		Blog.dao.deleteById(getParaToInt());
 		redirect("/blog");
 	}
 }

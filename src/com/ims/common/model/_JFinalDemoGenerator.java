@@ -39,7 +39,7 @@ public class _JFinalDemoGenerator {
 		// 设置是否生成链式 setter 方法
 		generator.setGenerateChainSetter(false);
 		// 添加不需要生成的表名
-		generator.addExcludedTable("s_role","blog","s_user");
+		generator.addExcludedTable("s_role","blog","s_user","s_resource","s_roleright","s_dic");
 		// 设置是否在 Model 中生成 dao 对象
 		generator.setGenerateDaoInModel(true);
 		// 设置是否生成链式 setter 方法

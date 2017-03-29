@@ -39,4 +39,11 @@ CREATE TABLE s_resource (
   PRIMARY KEY  (`id`)
 );
 
-insert into s_resource(name,url,parent_id,level,order_id) values('用户管理','','0','1','1');
+insert into s_resource(name,url,parent_id,level,order_id) values('鐢ㄦ埛绠＄悊','','0','1','1');
+
+
+CREATE TABLE s_roleright (
+  role_id bigint(225) NOT NULL,
+  resource_id bigint(225) NOT NULL,
+  op_flg int
+);

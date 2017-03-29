@@ -1,6 +1,6 @@
-package com.ims.common.service.user;
+package com.ims.common.service;
 
-import com.ims.common.model.base.user.BaseSRole;
+import com.ims.common.model.base.BaseSRole;
 import com.jfinal.plugin.activerecord.Page;
 
 /**

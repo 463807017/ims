@@ -2,7 +2,7 @@ package com.ims.role;
 
 
 
-import com.ims.common.service.user.SRole;
+import com.ims.common.service.SRole;
 import com.ims.util.StringUtil;
 import com.jfinal.core.Controller;
 

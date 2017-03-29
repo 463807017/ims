@@ -12,7 +12,7 @@ import com.jfinal.plugin.activerecord.Page;
 public class SUser extends BaseSUser<SUser> {
 	public static final SUser dao = new SUser().dao();
 	
-	public Page<SUser> paginate(int pageNumber, int pageSize) {
-		return paginate(pageNumber, pageSize, "select *", "from s_user order by id desc");
+	public Page<SUser> paginate(int pageNumber, int pageSize,String condition) {
+		return paginate(pageNumber, pageSize, "select *", "from s_user " + condition + " order by id desc");
 	}
 }

@@ -49,17 +49,11 @@
                                                 <!--box body-->
                                                 <div class="box-body">
                                                     <!--element-->
-                                                    <form id="form-validate" class="form-horizontal" action="../user/" method="post"/>
+                                                    <form id="form-validate" class="form-horizontal" action="../role/" method="post"/>
                                                         <div class="control-group">
-                                                            <label class="control-label" for="inputAuto">姓名</label>
+                                                            <label class="control-label" for="inputAuto">角色名称</label>
                                                             <div class="controls">
                                                                 <input type="text" value="#(sUser.name)" name="sUser.name" class="grd-white" data-validate="{required: true, messages:{required:'姓名不能为空'}}" />
-                                                            </div>
-                                                        </div>
-                                                        <div class="control-group">
-                                                            <label class="control-label" for="inputAuto">登录名</label>
-                                                            <div class="controls">
-                                                                <input type="text" value="#(sUser.login_name)" name="sUser.login_name" class="grd-white" data-validate="{required: true, minlength: 6, messages:{required:'登录名不能为空', minlength:'登录名小于6位'}}"/>
                                                             </div>
                                                         </div>
                                                         
@@ -91,19 +85,17 @@
                                             <table id="data_list" class="table table-hover responsive">
                                               <thead>
                                                     <tr>
-                                                        <th>客户号</th>
-                                                        <th>姓名</th>
-                                                        <th>登录名)</th>
-                                                        <th>登录时间</th>
+                                                        <th>角色号</th>
+                                                        <th>名称</th>
+                                                        <th>描述</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    #for(x : userPage.getList())
+                                                    #for(x : rolePage.getList())
 												<tr class="gradeA">
                                                         <td>#(x.id)</td>
                                                         <td>#(x.name)</td>
-                                                        <td>#(x.login_name)</td>
-                                                        <td #(x.input_time)</td>
+                                                        <td>#(x.descption)</td>
                                                     </tr>
 												#end
                                                 </tbody>
@@ -113,7 +105,7 @@
                                 </div><!-- /span -->
                             </div><!--/hover-->
                             
-                           	#@paginate(userPage.pageNumber, userPage.totalPage, "../user/","form-validate")
+                           	#@paginate(rolePage.pageNumber, rolePage.totalPage, "../role/","form-validate")
 
 
 <!-- javascript

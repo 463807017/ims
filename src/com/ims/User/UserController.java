@@ -1,20 +1,28 @@
 package com.ims.User;
 
 
-import com.ims.common.model.Blog;
 import com.ims.common.service.user.SUser;
+import com.ims.util.StringUtil;
 import com.jfinal.core.Controller;
 
 /**
- * 本 ims 仅表达最为粗浅的 jfinal 用法，更为有价值的实用的企业级用法
- * 详见 JFinal 俱乐部: http://jfinal.com/club
- * 
- * BlogController
- * 所有 sql 与业务逻辑写在 Model 或 Service 中，不要写在 Controller 中，养成好习惯，有利于大型项目的开发与维护
+ *用户模块
  */
 public class UserController extends Controller {
 	public void index() {
-		setAttr("userPage", SUser.dao.paginate(getParaToInt(0, 1), 10));
+		StringBuffer condition = new StringBuffer();
+		SUser sUser = getModel(SUser.class);
+		setAttr("sUser", sUser);
+		if(sUser != null){
+			condition.append(" where 1=1 ");
+			if(!StringUtil.isNull(sUser.getName())){
+				condition.append(" and name like '%" + sUser.getName() + "%'");
+			}
+			if(!StringUtil.isNull(sUser.getLoginName())){
+				condition.append(" and login_name like '%" + sUser.getLoginName() + "%'");
+			}
+		}
+		setAttr("userPage", SUser.dao.paginate(getParaToInt(0, 1), 5,condition.toString()));
 		render("/WEB-INF/mvcs/user/user.html");
 	}
 	
@@ -24,21 +32,25 @@ public class UserController extends Controller {
 	
 	public void save() {
 		getModel(SUser.class).save();
-		redirect("/user/index");
+		redirect("/user/");
 	}
 	
 	public void edit() {
-		setAttr("blog", SUser.dao.findById(getParaToInt()));
+		int para =  getParaToInt("id");
+		SUser user = SUser.dao.findById(para);
+		setAttr("user", user);
+		render("/WEB-INF/mvcs/user/add.html");
 	}
 	
 	public void update() {
 		getModel(SUser.class).update();
-		redirect("/user");
+		redirect("/user/");
 	}
 	
 	public void delete() {
-		Blog.me.deleteById(getParaToInt());
-		redirect("/blog");
+		int para =  getParaToInt("id");
+		SUser.dao.deleteById(para);
+		redirect("/user/");
 	}
 }
 

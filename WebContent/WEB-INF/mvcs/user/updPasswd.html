@@ -1,0 +1,132 @@
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Form - Stilearn Admin Bootstrap</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="" />
+        <meta name="author" content="stilearning" />
+
+        <!-- google font -->
+        <link href="http://fonts.googleapis.com/css?family=Aclonica:regular" rel="stylesheet" type="text/css" />
+
+        <!-- styles -->
+        <link href="../css/bootstrap.css" rel="stylesheet" />
+        <link href="../css/bootstrap-responsive.css" rel="stylesheet" />
+        <link href="../css/stilearn.css" rel="stylesheet" />
+        <link href="../css/stilearn-responsive.css" rel="stylesheet" />
+        <link href="../css/stilearn-helper.css" rel="stylesheet" />
+        <link href="../css/stilearn-icon.css" rel="stylesheet" />
+        <link href="../css/font-awesome.css" rel="stylesheet" />
+        <link href="../css/animate.css" rel="stylesheet" />
+        <link href="../css/uniform.default.css" rel="stylesheet" />
+        
+        <link href="../css/datepicker.css" rel="stylesheet" />
+        <link href="../css/colorpicker.css" rel="stylesheet" />
+        <link href="../css/select2.css" rel="stylesheet" />
+        <link href="../css/bootstrap-wysihtml5.css" rel="stylesheet" />
+        
+        <link href="../css/responsive-tables.css" rel="stylesheet" />
+        
+        <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+        <!--[if lt IE 9]>
+          <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
+    
+    <body>
+
+	        <!--element-->
+                                    <div id="element" class="row-fluid">
+                                        <!--span-->
+                                        <div class="span12">
+                                            <!--box-->
+                                            <div class="box corner-all">
+                                                <!--box header-->
+                                                <div class="box-header grd-white color-silver-dark corner-top">
+                                                    <div class="header-control">
+                                                        <a data-box="collapse"><i class="icofont-caret-up"></i></a>
+                                                        <a data-box="close">&times;</a>
+                                                    </div>
+                                                    <span>修改密码</span>
+                                                </div><!--/box header-->
+                                                <!--box body-->
+                                                <div class="box-body">
+                                                    <!--element-->
+                                                    <form id="form-validate" class="form-horizontal" action="updatePasswd" onsubmit="return bofore(); "  method="post"/>
+                                                        <input value="#(user.id)" style="height: 30px;" type="hidden" name="id" class="grd-white"   />
+                                                    
+                                                        <div class="control-group">
+                                                            <label class="control-label" for="inputAuto">登录名</label>
+                                                            <div class="controls">
+                                                                <input readonly="readonly" value="#(user.login_name)" style="height: 30px;" type="text" name="sUser.login_name" class="grd-white" data-validate="{required: true, minlength: 6, messages:{required:'登录名不能为空', minlength:'登录名小于6位'}}"/>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                         <div class="control-group">
+                                                            <label class="control-label" for="inputAuto">新密码</label>
+                                                            <div class="controls">
+                                                                <input id="p1" value="" style="height: 30px;" type="password" name="new_login_passwd" class="grd-white" data-validate="{required: true, minlength: 6, messages:{required:'密码不能为空', minlength:'密码小于6位'}}"/>
+                                                            </div>
+                                                        </div>
+                                                        <div class="control-group">
+                                                            <label class="control-label" for="inputAuto">确认密码</label>
+                                                            <div class="controls">
+                                                                <input id="p2" value="" style="height: 30px;" type="password" name="confirm" class="grd-white" data-validate="{required: true, minlength: 6, messages:{required:'密码不能为空', minlength:'密码小于6位'}}"/>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <div class="control-group">
+                                                            <label class="control-label" for="inputAuto">旧密码</label>
+                                                            <div class="controls">
+                                                                <input  value="" style="height: 30px;" type="password" name="old_login_passwd" class="grd-white" data-validate="{required: true, minlength: 6, messages:{required:'密码不能为空', minlength:'密码小于6位'}}"/>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-actions">
+                                                            <button type="submit" class="btn btn-primary" >确定</button>
+                                                            <button type="button" class="btn" onclick="javascript:window.history.back();">返回</button>
+                                                        </div>
+                                                    </form>
+                                                    <!--/element-->
+                                                </div><!--/box body-->
+                                            </div><!--/box-->
+                                        </div><!--/span--> 
+                                    </div><!--/element-->
+                                    
+	</body>
+	<script src="../js/jquery.js"></script>
+        <script src="../js/jquery-ui.min.js"></script>
+        <script src="../js/bootstrap.js"></script>
+        <script src="../js/uniform/jquery.uniform.js"></script>
+        
+        <script src="../js/datepicker/bootstrap-datepicker.js"></script>
+        <script src="../js/colorpicker/bootstrap-colorpicker.js"></script>
+        <script src="../js/select2/select2.js"></script>
+        <script src="../js/wysihtml5/wysihtml5-0.3.0.js"></script>
+        <script src="../js/wysihtml5/bootstrap-wysihtml5.js"></script>
+        <script src="../js/validate/jquery.validate.js"></script>
+        <script src="../js/validate/jquery.metadata.js"></script>
+        <script src="../js/wizard/jquery.ui.widget.js"></script> <!-- this required for jquery.wizard-->
+        <script src="../js/wizard/jquery.wizard.js"></script>
+        <script src="../js/responsive-tables/responsive-tables.js"></script>
+        
+        <!-- required stilearn template js, for full feature-->
+        <script src="../js/holder.js"></script>
+
+        <script type="text/javascript">
+            $(document).ready(function() {
+            	 // validate form
+                $('#form-validate').validate();
+            });
+            
+            function bofore(){
+            	if($("#p1").val() != $("#p2").val()){
+            		$("#p1").val("");
+            		$("#p2").val("");
+            		alert("新密码确认失败");
+            		return false;
+            	}
+            	return true;
+            }
+      
+        </script>
+</html>

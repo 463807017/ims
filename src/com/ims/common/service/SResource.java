@@ -1,5 +1,7 @@
 package com.ims.common.service;
 
+import java.util.ArrayList;
+import java.util.List;
 import com.ims.common.model.base.BaseSResource;
 
 /**
@@ -8,4 +10,43 @@ import com.ims.common.model.base.BaseSResource;
 @SuppressWarnings("serial")
 public class SResource extends BaseSResource<SResource> {
 	public static final SResource dao = new SResource().dao();
+	private List<SResource> childs;
+	
+
+	public List<SResource> getChilds() {
+		return childs;
+	}
+
+
+
+	public void setChilds(List<SResource> childs) {
+		this.childs = childs;
+	}
+
+
+
+	public static SResource getDao() {
+		return dao;
+	}
+
+
+
+	public SResource findTrees(String sql,Long pid,SResource bean){
+		
+		//获取到第一层菜单
+		List<SResource> level = dao.find(sql, pid);
+		if(level != null && level.size() > 0){
+			ArrayList<SResource> childs = new ArrayList<SResource>();
+			for (SResource sResource : level) {
+				childs.add(sResource);//添加子菜单
+				Long parentId = sResource.getId();
+				if(parentId != null || parentId != 0L)
+					findTrees(sql, parentId, sResource);//递归调用
+			}
+			bean.setChilds(childs);
+		}
+		
+		
+		return bean;
+	}
 }

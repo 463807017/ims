@@ -1,0 +1,158 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Tables - Stilearn Admin Bootstrap</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="" />
+        <meta name="author" content="stilearning" />
+
+        <!-- google font -->
+        <link href="http://fonts.googleapis.com/css?family=Aclonica:regular" rel="stylesheet" type="text/css" />
+
+        <!-- styles -->
+        <link href="../css/bootstrap.css" rel="stylesheet" />
+        <link href="../css/bootstrap-responsive.css" rel="stylesheet" />
+        <link href="../css/stilearn.css" rel="stylesheet" />
+        <link href="../css/stilearn-responsive.css" rel="stylesheet" />
+        <link href="../css/stilearn-helper.css" rel="stylesheet" />
+        <link href="../css/stilearn-icon.css" rel="stylesheet" />
+        <link href="../css/font-awesome.css" rel="stylesheet" />
+        <link href="../css/animate.css" rel="stylesheet" />
+        <link href="../css/uniform.default.css" rel="stylesheet" />
+        
+        <link href="../css/DT_bootstrap.css" rel="stylesheet" />
+        <link href="../css/responsive-tables.css" rel="stylesheet" />
+        
+        <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+        <!--[if lt IE 9]>
+          <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
+
+<link rel="stylesheet" href="../css/zTreeStyle/zTreeStyle.css" type="text/css">
+	<script type="text/javascript" src="../js/jquery-1.4.4.min.js"></script>
+	<script type="text/javascript" src="../js/jquery.ztree.core.js"></script>
+	<!--  <script type="text/javascript" src="../js/jquery.ztree.excheck.js"></script>
+	  <script type="text/javascript" src="../js/jquery.ztree.exedit.js"></script>-->
+	<SCRIPT type="text/javascript">
+	
+		var setting = {
+			view : {
+				selectedMulti : false
+			},
+			async : {
+				enable : true, //启用异步加载
+				url : "resourceJson", //调用的后台的方法
+				autoParam : [ "id" ], //向后台传递的参数
+				otherParam : {}, //额外的参数
+				dataFilter : filter
+			},
+			callback : {
+				beforeClick : beforeClick,
+				beforeAsync : beforeAsync,
+				onAsyncError : onAsyncError,
+				onAsyncSuccess : onAsyncSuccess,
+				beforeExpand : beforeExpand
+			}
+		};
+		
+		function beforeExpand(treeId, treeNode){
+			 var zTree = $.fn.zTree.getZTreeObj("tree");
+			zTree.reAsyncChildNodes(treeNode, "add", true);
+
+		}
+
+		function filter(treeId, parentNode, childNodes) {
+			var array = [];
+			if (!childNodes || childNodes.length < 1){
+				parentNode.isParent = true;
+				 var zTree = $.fn.zTree.getZTreeObj("tree");
+				 zTree.updateNode(parentNode);
+				return null;
+			}
+			for (var i = 0, l = childNodes.length; i < l; i++) {
+				repname = childNodes[i].name.replace(/\.n/g, '.');
+				array[i] = {
+					id : childNodes[i].id,
+					name : repname,
+					isParent : childNodes[i].isParent
+				};//将后台传过来的参数拼接成json格式，并放在数组中，如果有必要需要对其是否为父节点做处理
+			}
+			return array;
+		}
+		function beforeClick(treeId, treeNode) {
+			if (!treeNode.isParent) {
+				alert("Please select one parent node...");
+				return false;
+			} else {
+				return true;
+			}
+		}
+		var log, className = "dark";
+		function beforeAsync(treeId, treeNode) {
+			return true;
+		}
+		function onAsyncError(event, treeId, treeNode, XMLHttpRequest,
+				textStatus, errorThrown) {
+		}
+		function onAsyncSuccess(event, treeId, treeNode, msg) {
+		}
+
+		function showLog(str) {
+		}
+
+		function refreshNode(data) {
+			var zTree = $.fn.zTree.getZTreeObj("tree"), type = data.type, silent = data.silent, nodes = zTree
+					.getSelectedNodes();
+			if (nodes.length == 0) {
+				alert("Please select one parent node at first...");
+			}
+			for (var i = 0, l = nodes.length; i < l; i++) {
+				zTree.reAsyncChildNodes(nodes[i], type, silent);
+				if (!silent)
+					zTree.selectNode(nodes[i]);
+			}
+		}
+
+		var zTree;
+		$(document).ready(function() {
+
+			var zNodes = [ {
+				id : 0,
+				pId : -1,
+				name : "parentNode 1",
+				open : true,
+				isParent : true
+			} ];
+			$.fn.zTree.init($("#tree"), setting, zNodes);
+			/*
+			$("#refreshNode").bind("click", {type:"refresh", silent:false}, refreshNode);
+			$("#refreshNodeSilent").bind("click", {type:"refresh", silent:true}, refreshNode);
+			$("#addNode").bind("click", {type:"add", silent:false}, refreshNode);
+			$("#addNodeSilent").bind("click", {type:"add", silent:true}, refreshNode);
+			var zTree = $.fn.zTree.getZTreeObj("tree")
+			zTree.reAsyncChildNodes(null, "add", true);
+			 */
+		
+		});
+	</SCRIPT>
+
+
+    <body>
+    
+    
+        <!-- section content -->
+        <section class="section">
+            <div class="row-fluid">
+                <!-- span side-left -->
+                <div class="span2">
+                    <!--side bar-->
+                    <aside class="side-left" style="height:300px;width: 200px;">
+                        <ul id="tree" class="ztree"></ul>
+                    </aside><!--/side bar -->
+                </div><!-- span side-left -->
+        </section>
+    </body>
+</html>

@@ -5,6 +5,7 @@ import com.ims.User.UserInterceptor;
 import com.ims.blog.BlogController;
 import com.ims.index.IndexController;
 import com.ims.interceptor.ExceptionInterceptor;
+import com.ims.resource.ResourceController;
 import com.ims.role.RoleController;
 import com.jfinal.config.Constants;
 import com.jfinal.config.Handlers;
@@ -44,6 +45,8 @@ public class ImsConfig extends JFinalConfig {
 		me.add("/blog", BlogController.class); // 第三个参数省略时默认与第一个参数值相同，在此即为 "/blog"
 		me.add("/user", UserController.class); 
 		me.add("/role", RoleController.class); 
+		me.add("/resource", ResourceController.class); 
+
 	}
 	
 	public void configEngine(Engine me) {

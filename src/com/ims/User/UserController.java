@@ -39,7 +39,15 @@ public class UserController extends Controller {
 		int para =  getParaToInt("id");
 		SUser user = SUser.dao.findById(para);
 		setAttr("user", user);
-		render("/WEB-INF/mvcs/user/add.html");
+		
+		String page =  getPara("page");
+
+		if(StringUtil.isNull(page)){
+			render("/WEB-INF/mvcs/user/add.html");
+		}else{
+			render("/WEB-INF/mvcs/user/" + page + ".html");
+		}
+
 	}
 	
 	public void update() {
@@ -52,6 +60,23 @@ public class UserController extends Controller {
 		SUser.dao.deleteById(para);
 		redirect("/user/");
 	}
+	
+	public void updatePasswd() throws Exception{
+		int id = getParaToInt("id");
+		SUser user = SUser.dao.findById(id);
+		String loginPasswd = user.getLoginPasswd();
+		String old_login_passwd = getPara("old_login_passwd");
+		if(StringUtil.isNull(old_login_passwd) || !old_login_passwd.equals(loginPasswd)){
+			renderText("旧密码输入错误");
+			return;
+		}
+		String new_login_passwd = getPara("new_login_passwd");
+		user.setLoginPasswd(new_login_passwd);
+		user.update();
+		renderText("修改成功");
+		
+	}
+	
 }
 
 

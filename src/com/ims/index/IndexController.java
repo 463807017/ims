@@ -20,6 +20,18 @@ public class IndexController extends Controller {
 	public void index() {
 		render("/WEB-INF/mvcs/login/login.html");
 	}
+	
+	public void main(){
+		Object user = getSessionAttr("user");
+		if(user == null){
+			redirect("/");
+		}else{
+			SResource re = getSessionAttr("resources");
+			System.out.println(re.getChilds().size());
+			render("/WEB-INF/mvcs/index/index.html");
+		}
+	}
+	
 	@Clear
 	public void login() throws Exception{
 		SUser user = getModel(SUser.class);
@@ -50,8 +62,15 @@ public class IndexController extends Controller {
 					else
 						roleStr.append(roleuser.getRoleId()).append(",");
 				}
-				roleStr.append(" and op_flg=0)");//0 表示访问权限
-				List<SResource> resources =  SResource.dao.find(roleStr.toString());
+				roleStr.append(" and op_flg=0) and parent_id=? order by order_id desc");//0 表示访问权限
+				
+				
+				SResource resources = new SResource();
+				resources.setId(0L);
+				resources.setName("root");
+				resources.setLevel(0);
+				
+				resources =  SResource.dao.findTrees(roleStr.toString(), 0L,resources);//根目录id为0
 				setSessionAttr("resources", resources);
 
 			}else{
@@ -59,9 +78,16 @@ public class IndexController extends Controller {
 			}
 			
 
-			render("/WEB-INF/mvcs/index/index.html");
-
+//			render("/WEB-INF/mvcs/index/index.html");
+			redirect("/main");
+			
 		}
+	}
+	
+	@Clear
+	public void logout() throws Exception{
+		if(this.getSession() != null) this.getSession().invalidate();
+		renderText("退出成功");
 	}
 }
 

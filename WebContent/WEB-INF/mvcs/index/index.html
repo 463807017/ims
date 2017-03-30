@@ -172,22 +172,22 @@
                                 </ul>
                             </div>
                             <div class="btn-group">
-                                <a class="btn btn-inverse btn-small" href="#">Other Action</a>
+                                <a class="btn btn-inverse btn-small" href="logout/">退出</a>
                             </div>
                             <div class="btn-group user-group">
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                    <img class="corner-all" align="middle" src="img/user-thumb.jpg" title="John Doe" alt="john doe" /> <!--this for display on PC device-->
-                                    <button class="btn btn-small btn-inverse">John Doe</button> <!--this for display on tablet and phone device-->
+                                    <img class="corner-all" align="middle" src="upload/#(user.img_src)" title="#(user.name)" alt="john doe" /> <!--this for display on PC device-->
+                                    <button class="btn btn-small btn-inverse">#(user.name)</button> <!--this for display on tablet and phone device-->
                                 </a>
                                 <ul class="dropdown-menu dropdown-user" role="menu" aria-labelledby="dLabel">
                                     <li>
                                         <div class="media">
                                             <a class="pull-left" href="#">
-                                                <img class="img-circle" src="img/user.jpg" title="profile" alt="profile" />
+                                                <img class="img-circle" src="upload/#(user.img_src)" title="profile" alt="profile" />
                                             </a>
                                             <div class="media-body description">
-                                                <p><strong>John Doe</strong></p>
-                                                <p class="muted">johndoe@mail.com</p>
+                                                <p><strong>#(user.name)</strong></p>
+                                                <p class="muted">#(user.login_name)</p>
                                                 <p class="action"><a class="link" href="#">Activity</a> - <a class="link" href="#">Setting</a></p>
                                                 <a href="bonus-page/resume/index.html" class="btn btn-primary btn-small btn-block">View Profile</a>
                                             </div>
@@ -195,7 +195,7 @@
                                     </li>
                                     <li class="dropdown-footer">
                                         <div>
-                                            <a class="btn btn-small pull-right" href="login.html">Logout</a>
+                                            <a class="btn btn-small pull-right" href="logout/">退出</a>
                                             <a class="btn btn-small" href="#">Add Account</a>
                                         </div>
                                     </li>
@@ -214,43 +214,30 @@
                 <div class="span1">
                     <!--side bar-->
                     <aside class="side-left">
-                        <ul class="sidebar">
-                            <li>
-                                <a href="form.html" title="form">
-                                    <div class="badge badge-important">3</div>
+                        #for(resource : resources.getChilds())
+                        	<ul class="sidebar">
+                        		<li>
+                                <a href="javascript:toMain('#if(resource.url=='')#else resource.url#end')" title="#(resource.name)">
+                                    <div class="badge badge-important">#(resource.getChilds().size())</div>
                                     <div class="helper-font-24">
                                         <i class="icofont-edit"></i>
                                     </div>
-                                    <span class="sidebar-text">Form</span>
+                                    <span class="sidebar-text">#(resource.name)</span>
                                 </a>
+                                #if(resource.getChilds().size()>0)
                                 <ul class="sub-sidebar-form corner-top shadow-white">
-                                    <li class="title muted">Quick Upload</li>
-                                    <li>
-                                        <input type="file" data-form="uniform" onchange="alert('your progres uploading file...')" />
-                                    </li>
-                                    <li class="divider"></li>
-                                    <li>
-                                        <a href="form.html" title="form element" class="corner-all">
+                                	#for(r2 : resource.getChilds())
+                                		<li>
+                                        <a href="javascript:toMain('#(r2.url)')" title="form element" class="corner-all">
                                             <i class="icofont-file"></i>
-                                            <span class="sidebar-text">Form Element</span>
+                                            <span class="sidebar-text">#(r2.name)</span>
                                         </a>
-                                    </li>
-                                    <li class="divider"></li>
-                                    <li>
-                                        <a href="code_editor.html" title="code editor" class="corner-all">
-                                            <i class="icofont-book"></i>
-                                            <span class="sidebar-text">Code Editor</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="gallery.html" title="gallery" class="corner-all">
-                                            <i class="icofont-picture"></i>
-                                            <span class="sidebar-text">Gallery</span>
-                                        </a>
-                                    </li>
+                                    	</li>
+                                	#end
                                 </ul>
-                            </li>
-                        </ul>
+                                #end
+                        	</ul>
+                        #end
                     </aside><!--/side bar -->
                 </div><!-- span side-left -->
                 
@@ -288,194 +275,14 @@
 
         <!-- required stilearn template js, for full feature-->
         <script src="js/holder.js"></script>
-        <script src="js/stilearn-base.js"></script>
 
         <script type="text/javascript">
-            $(document).ready(function() {
-                // try your js
-                
-                // normalize event tab-stat, we hack something here couse the flot re-draw event is any some bugs for this case
-                $('#tab-stat > a[data-toggle="tab"]').on('shown', function(){
-                    if(sessionStorage.mode == 4){ // this hack only for mode side-only
-                        $('body,html').animate({
-                            scrollTop: 0
-                        }, 'slow');
-                    }
-                });
-                
-                // peity chart
-                $("span[data-chart=peity-bar]").peity("bar");
-                
-                // Input tags with select2
-                $('input[name=reseiver]').select2({
-                    tags:[]
-                });
-                
-                // uniform
-                $('[data-form=uniform]').uniform();
-                
-                // wysihtml5
-                $('[data-form=wysihtml5]').wysihtml5()
-                toolbar = $('[data-form=wysihtml5]').prev();
-                btn = toolbar.find('.btn');
-                
-                $.each(btn, function(k, v){
-                    $(v).addClass('btn-mini')
-                });
-                
-                // Server stat circular by knob
-                $("input[data-chart=knob]").knob();
-                
-                // system stat flot
-                d1 = [ ['jan', 231], ['feb', 243], ['mar', 323], ['apr', 352], ['maj', 354], ['jun', 467], ['jul', 429] ];
-                d2 = [ ['jan', 87], ['feb', 67], ['mar', 96], ['apr', 105], ['maj', 98], ['jun', 53], ['jul', 87] ];
-                d3 = [ ['jan', 34], ['feb', 27], ['mar', 46], ['apr', 65], ['maj', 47], ['jun', 79], ['jul', 95] ];
-                
-                var visitor = $("#visitor-stat"),
-                order = $("#order-stat"),
-                user = $("#user-stat"),
-                
-                data_visitor = [{
-                        data: d1,
-                        color: '#00A600'
-                    }],
-                data_order = [{
-                        data: d2,
-                        color: '#2E8DEF'
-                    }],
-                data_user = [{
-                        data: d3,
-                        color: '#DC572E'
-                    }],
-                 
-                
-                options_lines = {
-                    series: {
-                        lines: {
-                            show: true,
-                            fill: true
-                        },
-                        points: {
-                            show: true
-                        },
-                        hoverable: true
-                    },
-                    grid: {
-                        backgroundColor: '#FFFFFF',
-                        borderWidth: 1,
-                        borderColor: '#CDCDCD',
-                        hoverable: true
-                    },
-                    legend: {
-                        show: false
-                    },
-                    xaxis: {
-                        mode: "categories",
-                        tickLength: 0
-                    },
-                    yaxis: {
-                        autoscaleMargin: 2
-                    }
-        
-                };
-                
-                // render stat flot
-                $.plot(visitor, data_visitor, options_lines);
-                $.plot(order, data_order, options_lines);
-                $.plot(user, data_user, options_lines);
-                
-                // tootips chart
-                function showTooltip(x, y, contents) {
-                    $('<div id="tooltip" class="bg-black corner-all color-white">' + contents + '</div>').css( {
-                        position: 'absolute',
-                        display: 'none',
-                        top: y + 5,
-                        left: x + 5,
-                        border: '0px',
-                        padding: '2px 10px 2px 10px',
-                        opacity: 0.9,
-                        'font-size' : '11px'
-                    }).appendTo("body").fadeIn(200);
-                }
-
-                var previousPoint = null;
-                $('#visitor-stat, #order-stat, #user-stat').bind("plothover", function (event, pos, item) {
-                    
-                    if (item) {
-                        if (previousPoint != item.dataIndex) {
-                            previousPoint = item.dataIndex;
-
-                            $("#tooltip").remove();
-                            var x = item.datapoint[0].toFixed(2),
-                            y = item.datapoint[1].toFixed(2);
-                            label = item.series.xaxis.ticks[item.datapoint[0]].label;
-                            
-                            showTooltip(item.pageX, item.pageY,
-                            label + " = " + y);
-                        }
-                    }
-                    else {
-                        $("#tooltip").remove();
-                        previousPoint = null;            
-                    }
-                    
-                });
-                // end tootips chart
-                
-                
-                // Schedule Calendar
-                var date = new Date();
-		var d = date.getDate();
-		var m = date.getMonth();
-		var y = date.getFullYear();
-		
-                var calendar = $('#schedule').fullCalendar({
-                    header: {
-                        left: 'title',
-                        center: '',
-                        right: 'prev,next today,month,basicWeek,basicDay'
-                    },
-                    events: [
-                        {
-                            title: 'Start a project',
-                            start: new Date(y, m, 1)
-                        },
-                        {
-                            title: 'interview and data collection',
-                            start: new Date(y, m, 3),
-                            end: new Date(y, m, 7)
-                        },
-                        {
-                            title: 'Creating design interface',
-                            start: new Date(y, m, 9),
-                            end: new Date(y, m, 12)
-                        },
-                        {
-                            title: 'Meeting',
-                            start: new Date(y, m, 19, 10, 30),
-                            allDay: false
-                        },
-                        {
-                            title: 'Meeting',
-                            start: new Date(y, m, 28, 10, 30),
-                            allDay: false
-                        },
-                        {
-                            title: 'Date',
-                            start: new Date(y, m, d, 12, 0),
-                            end: new Date(y, m, d, 14, 0),
-                            allDay: false
-                        },
-                        {
-                            title: 'Birthday Party',
-                            start: new Date(y, m, d+1, 19, 0),
-                            end: new Date(y, m, d+1, 22, 30),
-                            allDay: false
-                        }
-                    ]
-                });
-                // end Schedule Calendar
-            });
+         
+            function toMain(url){
+                if(url == '') return;
+               	$("#main").attr("src",url);
+            };
+            
       
         </script>
     </body>

@@ -30,7 +30,7 @@ public class _MappingKit {
 		arp.addMapping("s_user", "id", SUser.class);
 		arp.addMapping("s_roleuser", "user_id,role_id", SRoleuser.class);
 		arp.addMapping("s_roleright", "resource_id,role_id", SRoleright.class);
-		arp.addMapping("s_resource", "resource_id,role_id", SResource.class);
+		arp.addMapping("s_resource", "id", SResource.class);
 		arp.addMapping("s_dic", "en,op", SDic.class);
 		arp.addMapping("sales_out", "id", SalesOut.class);
 		arp.addMapping("buy_in", "id", BuyIn.class);

@@ -47,40 +47,43 @@
                                                         <a data-box="collapse"><i class="icofont-caret-up"></i></a>
                                                         <a data-box="close">&times;</a>
                                                     </div>
-                                                    <span>新增角色</span>
+                                                    <span>编辑菜单</span>
                                                 </div><!--/box header-->
                                                 <!--box body-->
                                                 <div class="box-body">
                                                     <!--element-->
-                                                    <form id="form-validate" class="form-horizontal" action="#if(role==null)save#else update#end" onsubmit="return $('#form-validate').validate();" method="post"/>
-                                                        <input value="#(role.id)" style="height: 30px;" type="hidden" name="sRole.id" class="grd-white"   />
+                                                    <form id="form-validate" class="form-horizontal" action="#if(sResource.id==null)save#else update#end" onsubmit="return $('#form-validate').validate(); "  method="post"/>
+                                                        <input value="#(sResource.id)" style="height: 30px;" type="hidden" name="sUser.id" class="grd-white"   />
                                                     
                                                         <div class="control-group">
-                                                            <label class="control-label" for="inputAuto">名称</label>
+                                                            <label class="control-label" for="inputAuto">资源编号</label>
                                                             <div class="controls">
-                                                                <input value="#(role.name)" style="height: 30px;" type="text" name="sRole.name" class="grd-white" data-validate="{required: true, messages:{required:'姓名不能为空'}}" />
+                                                                <input readonly="readonly" value="#(sResource.id)" style="height: 30px;" type="text" name="sResource.id" class="grd-white"  />
                                                             </div>
                                                         </div>
                                                         <div class="control-group">
-                                                            <label class="control-label">是否管理员</label>
+                                                            <label class="control-label" for="inputAuto">名称</label>
                                                             <div class="controls">
-                                                                <select name="sRole.is_admin">
-                                                                	<option value="1" #if(role.is_admin==1)selected="selected"#end>是</option>
-                                                                	<option value="2" #if(role.is_admin!=1)selected="selected"#end>否</option>
-                                                                </select>
+                                                                <input value="#(sResource.name)" style="height: 30px;" type="text" name="sResource.name" class="grd-white"/>
                                                             </div>
                                                         </div>
                                                         
                                                         <div class="control-group">
-                                                            <label class="control-label" for="inputAuto">描述</label>
+                                                            <label class="control-label" for="inputAuto">地址</label>
                                                             <div class="controls">
-                                                                <input value="#(role.descption)" style="height: 30px;" type="text" name="sRole.descption" class="grd-white" />
+                                                                <input value="#(sResource.url)" style="height: 30px;" type="text" name="sResource.url" class="grd-white" />
+                                                            </div>
+                                                        </div>
+                                                        
+                                                         <div class="control-group">
+                                                            <label class="control-label" for="inputAuto">序号</label>
+                                                            <div class="controls">
+                                                                <input value="#(sResource.order_id)" style="height: 30px;" type="text" name="sResource.order_id" class="grd-white" />
                                                             </div>
                                                         </div>
                                                         
                                                         <div class="form-actions">
-                                                            <button type="submit" class="btn btn-primary" >#if(role==null)新增#else 更新#end</button>
-                                                            <button type="button" class="btn" onclick="javascript:location.href='.';">返回</button>
+                                                            <button type="button" class="btn btn-primary" onclick="doSubmit()" >#if(sResource.id==null)新增#else 更新#end</button>
                                                         </div>
                                                     </form>
                                                     <!--/element-->
@@ -114,6 +117,24 @@
             	 // validate form
                 $('#form-validate').validate();
             });
+            
+            
+            function doSubmit(){
+            	var action = $("#form-validate").attr("action");
+            	 var data = $("#form-validate").serializeArray();
+            	$.ajax({
+                    type: "POST",
+                    url: action,
+                    data: data,
+                    success: function(data1){
+                		alert('操作成功');
+                		window.parent.updateNode(data[2].value);
+                       },
+                    error: function(){
+                    	   alert('系统异常');
+                    }
+                 });
+            }
       
         </script>
 </html>

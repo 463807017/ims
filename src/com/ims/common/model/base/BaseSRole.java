@@ -8,7 +8,16 @@ import com.jfinal.plugin.activerecord.IBean;
  */
 @SuppressWarnings({"serial", "unchecked"})
 public abstract class BaseSRole<M extends BaseSRole<M>> extends Model<M> implements IBean {
+	
+	public M setIsAdmin(java.lang.Integer isAdmin) {
+		set("is_admin", isAdmin);
+		return (M)this;
+	}
 
+	public java.lang.Integer getIsAdmin() {
+		return get("is_admin");
+	}
+	
 	public M setId(java.lang.Long id) {
 		set("id", id);
 		return (M)this;

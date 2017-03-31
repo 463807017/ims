@@ -54,15 +54,13 @@
 				beforeAsync : beforeAsync,
 				onAsyncError : onAsyncError,
 				onAsyncSuccess : onAsyncSuccess,
-				beforeExpand : beforeExpand
+				onClick : onClick
 			}
 		};
 		
-		function beforeExpand(treeId, treeNode){
-			 var zTree = $.fn.zTree.getZTreeObj("tree");
-			zTree.reAsyncChildNodes(treeNode, "add", true);
-
+		function onClick(treeId, treeNode){
 		}
+		
 
 		function filter(treeId, parentNode, childNodes) {
 			var array = [];
@@ -83,14 +81,12 @@
 			return array;
 		}
 		function beforeClick(treeId, treeNode) {
-			if (!treeNode.isParent) {
-				alert("Please select one parent node...");
+			if(treeNode.id==0){
 				return false;
-			} else {
-				return true;
 			}
+			toFrame('edit?id=' + treeNode.id);
+			return true;
 		}
-		var log, className = "dark";
 		function beforeAsync(treeId, treeNode) {
 			return true;
 		}
@@ -122,7 +118,7 @@
 			var zNodes = [ {
 				id : 0,
 				pId : -1,
-				name : "parentNode 1",
+				name : "资源管理",
 				open : true,
 				isParent : true
 			} ];
@@ -137,6 +133,20 @@
 			 */
 		
 		});
+		
+		function toFrame(url){
+			$("#right").attr("src",url);
+		}
+		
+		function updateNode(name){
+			var tree = $.fn.zTree.getZTreeObj("tree");
+			var nodes = tree.getSelectedNodes();
+			if(nodes.length > 0){
+				var node = nodes[0];
+				node.name = name;
+				tree.updateNode(node,false);
+			}
+		}
 	</SCRIPT>
 
 
@@ -147,12 +157,22 @@
         <section class="section">
             <div class="row-fluid">
                 <!-- span side-left -->
-                <div class="span2">
+                <div class="span3">
                     <!--side bar-->
-                    <aside class="side-left" style="height:300px;width: 200px;">
+                    <aside class="side-left content" style="margin-top: 0;margin-left: 0;top:0;width: 25%;">
                         <ul id="tree" class="ztree"></ul>
                     </aside><!--/side bar -->
                 </div><!-- span side-left -->
+                
+                <!-- span content -->
+                <div class="span9">
+                    <!-- content -->
+                    <div class="">
+                       <iframe id="right" scrolling="auto" src="../welcome.html" width="100%" height="100%" style="margin:0 0 0 0;" class="content"></iframe>
+                    </div><!-- /content -->
+                </div><!-- /span content -->
+            </div>
+             </div>
         </section>
     </body>
 </html>

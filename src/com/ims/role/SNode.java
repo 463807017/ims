@@ -6,8 +6,15 @@ public class SNode{
 	private String pId;
 	private String name;
 	private String level;
+	private String url;
 	private boolean isParent;
 	
+	public String getUrl() {
+		return url;
+	}
+	public void setUrl(String url) {
+		this.url = url;
+	}
 	public String getpId() {
 		return pId;
 	}

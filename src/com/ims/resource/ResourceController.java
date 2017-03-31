@@ -27,6 +27,7 @@ public class ResourceController extends Controller {
 			node.setLevel(s.getLevel() + "");
 			node.setIsParent(StringUtil.isNull(s.getUrl()));
 			node.setpId(s.getParentId() + "");
+			node.setUrl(s.getUrl());
 			nodes.add(node);
 		}
 		renderJson(nodes);
@@ -45,18 +46,18 @@ public class ResourceController extends Controller {
 	
 	public void save() {
 		getModel(SResource.class).save();
-		redirect("/resource/");
+		renderText("操作成功");
 	}
 	
 	public void edit() {
 		int para =  getParaToInt("id");
 		SResource resource = SResource.dao.findById(para);
-		setAttr("resource", resource);
+		setAttr("sResource", resource);
 		
 		String page =  getPara("page");
 
 		if(StringUtil.isNull(page)){
-			render("/WEB-INF/mvcs/resource/add.html");
+			render("/WEB-INF/mvcs/resource/resourceadd.html");
 		}else{
 			render("/WEB-INF/mvcs/resource/" + page + ".html");
 		}
@@ -64,8 +65,9 @@ public class ResourceController extends Controller {
 	}
 	
 	public void update() {
-		getModel(SResource.class).update();
-		redirect("/resource/");
+		SResource resource = getModel(SResource.class);
+		resource.update();
+		renderJson();
 	}
 	
 	public void delete() {

@@ -1,0 +1,188 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Tables - Stilearn Admin Bootstrap</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="" />
+        <meta name="author" content="stilearning" />
+
+        <!-- google font -->
+        <link href="http://fonts.googleapis.com/css?family=Aclonica:regular" rel="stylesheet" type="text/css" />
+
+        <!-- styles -->
+        <link href="../css/bootstrap.css" rel="stylesheet" />
+        <link href="../css/bootstrap-responsive.css" rel="stylesheet" />
+        <link href="../css/stilearn.css" rel="stylesheet" />
+        <link href="../css/stilearn-responsive.css" rel="stylesheet" />
+        <link href="../css/stilearn-helper.css" rel="stylesheet" />
+        <link href="../css/stilearn-icon.css" rel="stylesheet" />
+        <link href="../css/font-awesome.css" rel="stylesheet" />
+        <link href="../css/animate.css" rel="stylesheet" />
+        <link href="../css/uniform.default.css" rel="stylesheet" />
+        
+        <link href="../css/DT_bootstrap.css" rel="stylesheet" />
+        <link href="../css/responsive-tables.css" rel="stylesheet" />
+        
+        <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+        <!--[if lt IE 9]>
+          <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
+
+    <body>
+    
+     <div id="element" class="row-fluid">
+                                        <!--span-->
+                                        <div class="span12">
+                                            <!--box-->
+                                            <div class="box corner-all" style="margin-bottom:0px;">
+                                                <!--box header-->
+                                                <div class="box-header grd-white color-silver-dark corner-top">
+                                                    <div class="header-control">
+                                                        <a data-box="collapse"><i class="icofont-caret-up"></i></a>
+                                                        <a data-box="close">&times;</a>
+                                                    </div>
+                                                    <span>查询条件</span>
+                                                </div><!--/box header-->
+                                                <!--box body-->
+                                                <div class="box-body">
+                                                    <!--element-->
+                                                    <form id="form-validate" class="form-horizontal" action="." method="post"/>
+                                                        <div class="control-group">
+                                                            <label class="control-label" for="inputAuto">日期</label>
+                                                            <div class="controls">
+                                                                <input type="text" value="#(buyIn.input_date)" name="buyIn.input_date" class="grd-white" data-validate="{required: true, messages:{required:'姓名不能为空'}}" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="control-group">
+                                                            <label class="control-label" for="inputAuto">车号</label>
+                                                            <div class="controls">
+                                                                <input type="text" value="#(buyIn.car_no)" name="buyIn.car_no" class="grd-white" data-validate="{required: true, minlength: 6, messages:{required:'登录名不能为空', minlength:'登录名小于6位'}}"/>
+                                                            </div>
+                                                              <input type="hidden" value="#(buyIn.buy_type)" name="buyIn.buy_type" class="grd-white" data-validate="{required: true, minlength: 6, messages:{required:'登录名不能为空', minlength:'登录名小于6位'}}"/>
+                                                            
+                                                        </div>
+                                                        
+                                                        <div class="form-actions center">
+                                                            <button type="submit" class="btn btn-primary" >查询</button>
+                                                            <button type="button" class="btn btn-primary" onclick="doAdd()" >新增</button>
+                                                            <button type="button" class="btn btn-primary" onclick="doUpd()">修改</button>
+                                                            <button type="button" class="btn btn-primary" onclick="doDel()">删除</button>
+                                                        </div>
+                                                    </form>
+                                                    <!--/element-->
+                                                </div><!--/box body-->
+                                            </div><!--/box-->
+                                        </div><!--/span--> 
+                                    </div><!--/element-->
+                                    
+      <!-- hover -->
+                            <div class="row-fluid">
+                                <div class="span12">
+                                    <div class="box corner-all">
+                                        <div class="box-header grd-white corner-top">
+                                            <div class="header-control">
+                                                <a data-box="collapse"><i class="icofont-caret-up"></i></a>
+                                                <a data-box="close" data-hide="bounceOutRight">&times;</a>
+                                            </div>
+                                            <span>用户列表</span>
+                                        </div>
+                                        <div class="box-body">
+                                            <table id="data_list" class="table table-hover responsive">
+                                              <thead>
+                                                    <tr>
+                                                        <th style="display: none;">id</th>
+                                                        <th>日期</th>
+                                                        <th>时间</th>
+                                                        <th>车号</th>
+                                                        <th>毛重</th>
+                                                        <th>皮重</th>
+                                                        <th>净重</th>
+                                                        <th>出货方</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    #for(x : page.getList())
+												<tr class="gradeA">
+														<td style="display: none;">#(x.id)</td>
+                                                        <td>#(x.input_date)</td>
+                                                        <td>#(x.input_time)</td>
+                                                        <td>#(x.login_name)</td>
+                                                        <td>#(x.car_no)</td>
+                                                        <td>#(x.mao_heavy)</td>
+                                                        <td>#(x.pi_heavy)</td>
+                                                        <td>#(x.jin_heavy)</td>
+                                                        <td>#(x.saler_name)</td>
+                                                    </tr>
+												#end
+                                                </tbody>
+                                            </table>
+                                        </div><!-- /box-body -->
+                                    </div><!-- /box -->
+                                </div><!-- /span -->
+                            </div><!--/hover-->
+                            
+                           	#@paginate(page.pageNumber, page.totalPage, "../buyin/","form-validate")
+
+
+<!-- javascript
+        ================================================== -->
+        <script src="../js/jquery.js"></script>
+        <script src="../js/bootstrap.js"></script>
+        <script src="../js/uniform/jquery.uniform.js"></script>
+        
+        <script src="../js/datatables/jquery.dataTables.min.js"></script>
+        <script src="../js/datatables/extras/ZeroClipboard.js"></script>
+        <script src="../js/datatables/extras/TableTools.min.js"></script>
+        <script src="../js/datatables/DT_bootstrap.js"></script>
+        <script src="../js/responsive-tables/responsive-tables.js"></script>
+        
+        <!-- required stilearn template js, for full feature-->
+        <script src="../js/holder.js"></script>
+
+        <script type="text/javascript">
+	        var tableSelectedData = [];
+	        var tableSelectedIndex = null;
+	        $(document).ready(function(){
+	        	$("#data_list tbody tr").each(function(index){
+	        		var currentEle = $(this);  
+	                currentEle.click(function(){
+	        	        if(tableSelectedIndex == index) return;
+	        	        if(tableSelectedIndex != null){
+	            	        $("#data_list tbody tr").eq(tableSelectedIndex).css("background-color","");
+	        	        }
+	                  currentEle.css("background-color","#faf2cc"); 
+	                  tableSelectedIndex = index;
+	
+	                  currentEle.children().each(function(indexTd){
+	        	          var val = $(this).text();
+	        	          tableSelectedData[indexTd] = val;
+	                  });
+	                });  
+	        	});
+	        });
+        
+        	function doAdd(){
+            	location.href = "add?buyIn.buy_type=#(buyIn.buy_type)";
+        	}
+
+        	function doUpd(){
+            	if(tableSelectedIndex == null){
+                	alert("请选择一条记录");
+                	return;
+            	}
+            	location.href = "edit?buyIn.id=" + tableSelectedData[0] + "&buyIn.buy_type=#(buyIn.buy_type)";
+        	}
+
+			function doDel(){
+				if(tableSelectedIndex == null){
+                	alert("请选择一条记录");
+                	return;
+            	}
+            	location.href = "delete?buyIn.id=" + tableSelectedData[0] + "&buyIn.buy_type=#(buyIn.buy_type)";;
+        	}
+        </script>
+    </body>
+</html>

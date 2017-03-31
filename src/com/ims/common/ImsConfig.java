@@ -3,10 +3,13 @@ package com.ims.common;
 import com.ims.User.UserController;
 import com.ims.User.UserInterceptor;
 import com.ims.blog.BlogController;
+import com.ims.buy.BuyController;
 import com.ims.index.IndexController;
 import com.ims.interceptor.ExceptionInterceptor;
 import com.ims.resource.ResourceController;
 import com.ims.role.RoleController;
+import com.ims.sales.SaleController;
+import com.ims.sdic.SDicController;
 import com.jfinal.config.Constants;
 import com.jfinal.config.Handlers;
 import com.jfinal.config.Interceptors;
@@ -46,6 +49,9 @@ public class ImsConfig extends JFinalConfig {
 		me.add("/user", UserController.class); 
 		me.add("/role", RoleController.class); 
 		me.add("/resource", ResourceController.class); 
+		me.add("/sale", SaleController.class); 
+		me.add("/buy", BuyController.class); 
+		me.add("/sdic", SDicController.class); 
 
 	}
 	

@@ -1,12 +1,14 @@
 package com.ims.common;
 
 import com.ims.common.service.Blog;
+import com.ims.common.service.BuyIn;
 import com.ims.common.service.SDic;
 import com.ims.common.service.SResource;
 import com.ims.common.service.SRole;
 import com.ims.common.service.SRoleright;
 import com.ims.common.service.SRoleuser;
 import com.ims.common.service.SUser;
+import com.ims.common.service.SalesOut;
 import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 
 /**
@@ -30,6 +32,8 @@ public class _MappingKit {
 		arp.addMapping("s_roleright", "resource_id,role_id", SRoleright.class);
 		arp.addMapping("s_resource", "resource_id,role_id", SResource.class);
 		arp.addMapping("s_dic", "en,op", SDic.class);
+		arp.addMapping("sales_out", "id", SalesOut.class);
+		arp.addMapping("buy_in", "id", BuyIn.class);
 	}
 }
 

@@ -26,8 +26,6 @@ public class IndexController extends Controller {
 		if(user == null){
 			redirect("/");
 		}else{
-			SResource re = getSessionAttr("resources");
-			System.out.println(re.getChilds().size());
 			render("/WEB-INF/mvcs/index/index.html");
 		}
 	}

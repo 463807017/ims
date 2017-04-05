@@ -1,14 +1,28 @@
 package com.ims.User;
 
 
+import java.util.Date;
+
+import com.ims.common.service.SRole;
+import com.ims.common.service.SRoleuser;
 import com.ims.common.service.SUser;
 import com.ims.util.StringUtil;
+import com.ims.util.TimeUtil;
 import com.jfinal.core.Controller;
+import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.Page;
 
 /**
  *用户模块
  */
 public class UserController extends Controller {
+	
+	public void hasLoingName() {
+		String loginName = getPara("login_name");
+		long count = Db.queryLong("select count(1) from s_user where login_name=?",loginName);
+		renderJson("{\"flag\":" + count + "}");
+	}
+	
 	public void index() {
 		StringBuffer condition = new StringBuffer();
 		SUser sUser = getModel(SUser.class);
@@ -31,14 +45,17 @@ public class UserController extends Controller {
 	}
 	
 	public void save() {
-		getModel(SUser.class).save();
+		SUser user = getModel(SUser.class);
+		Date date = new Date();
+		user.setInputTime(StringUtil.getDate(date) + " " + StringUtil.getTime(date));
+		user.save();
 		redirect("/user/");
 	}
 	
 	public void edit() {
 		int para =  getParaToInt("id");
 		SUser user = SUser.dao.findById(para);
-		setAttr("user", user);
+		setAttr("sUser", user);
 		
 		String page =  getPara("page");
 
@@ -67,14 +84,69 @@ public class UserController extends Controller {
 		String loginPasswd = user.getLoginPasswd();
 		String old_login_passwd = getPara("old_login_passwd");
 		if(StringUtil.isNull(old_login_passwd) || !old_login_passwd.equals(loginPasswd)){
-			renderText("旧密码输入错误");
+			setAttr("erroMsg", "旧密码输入错误");
+			renderJsp("/WEB-INF/mvcs/erroMsg.jsp");
 			return;
 		}
 		String new_login_passwd = getPara("new_login_passwd");
 		user.setLoginPasswd(new_login_passwd);
 		user.update();
-		renderText("修改成功");
 		
+		setAttr("erroMsg", "修改成功");
+		renderJsp("/WEB-INF/mvcs/erroMsg.jsp");
+		
+	}
+	
+	
+	public void queryRole() throws Exception{
+		int id = getParaToInt("id");
+		SUser user = SUser.dao.findById(id);
+		setAttr("u",user);
+		
+//		String sql = "select r.id,r.name,r.descption from s_roleuser ru,s_role r where r.id=ru.role_id and ru.user_id=?";
+		Page<SRole> page = SRole.dao.paginateRoles(getParaToInt(0, 1), 5, String.valueOf(id));
+		setAttr("page",page);
+		render("/WEB-INF/mvcs/user/userrole.html");
+
+	}
+	
+	public void addRolePage(){
+		
+		int para =  getParaToInt("id");
+		SUser user = SUser.dao.findById(para);
+		setAttr("user", user);
+		
+		render("/WEB-INF/mvcs/user/addrole.html");
+
+	}
+	
+	public void saveAddRole(){
+		String role_ids = getPara("role_ids");
+		if(StringUtil.isNull(role_ids)){
+			setAttr("erroMsg", "请选择角色");
+			renderJsp("/WEB-INF/mvcs/erroMsg.jsp");
+			return;
+		}
+		SUser user = getModel(SUser.class);
+		String[] roles = role_ids.split(",");
+		for (int i = 0; i < roles.length; i++) {
+			SRoleuser ru = new SRoleuser();
+			ru.setRoleId(Long.parseLong(roles[i]));
+			ru.setUserId(user.getId());
+			try {
+				ru.save();
+			} catch (Exception e) {
+			}
+		}
+		redirect("/user/queryRole?id=" + user.getId());
+	}
+	
+	public void deleteRole(){
+		long userId = getParaToLong("user_id");
+		long roleId = getParaToLong("role_id");
+		String sql = "delete from s_roleuser where role_id=? and user_id=?";
+		Db.update(sql,roleId,userId);
+		redirect("/user/queryRole?id=" + userId);
 	}
 	
 }

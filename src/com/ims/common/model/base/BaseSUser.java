@@ -8,14 +8,6 @@ import com.jfinal.plugin.activerecord.IBean;
  */
 @SuppressWarnings({"serial", "unchecked"})
 public abstract class BaseSUser<M extends BaseSUser<M>> extends Model<M> implements IBean {
-	public M setImgSrc(java.lang.String imgSrc) {
-		set("img_src", imgSrc);
-		return (M)this;
-	}
-	
-	public M getImgSrc() {
-		return get("img_src");
-	}
 	
 	public M setId(java.lang.Long id) {
 		set("id", id);

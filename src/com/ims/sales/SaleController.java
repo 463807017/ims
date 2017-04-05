@@ -1,9 +1,11 @@
 package com.ims.sales;
 
-
 import com.ims.common.service.SalesOut;
 import com.ims.util.StringUtil;
+import com.ims.util.TimeUtil;
+import com.ims.util.dic.SDicHelper;
 import com.jfinal.core.Controller;
+import com.jfinal.kit.PropKit;
 
 /**
  *出库模块
@@ -28,9 +30,12 @@ public class SaleController extends Controller {
 			if(salesOut.getCarType() != null){
 				condition.append(" and car_type=" + salesOut.getCarType());
 			}
+			if(salesOut.getBuyerName() != null){
+				condition.append(" and buyer_name  like '").append(salesOut.getCarType()).append("'");
+			}
 		}
 		
-		setAttr("page", SalesOut.dao.paginate(getParaToInt(0, 1), 5,condition.toString()));
+		setAttr("page", SalesOut.dao.paginate(getParaToInt(0, 1), 10,condition.toString()));
 		render("/WEB-INF/mvcs/saleout/saleout.html");
 	}
 	
@@ -47,6 +52,19 @@ public class SaleController extends Controller {
 		SalesOut out = getModel(SalesOut.class);
 		out.setInputDate(StringUtil.getDate(null));
 		out.setInputTime(StringUtil.getTime(null));
+		
+		String carNo = out.getCarNo();
+		out.setCarNo(SDicHelper.translate("CAR", carNo));
+		
+		String driver = out.getDriver();
+		out.setDriver(SDicHelper.translate("DRIVER", driver));
+		
+		String prdName = out.getPrdName();
+		out.setPrdName(SDicHelper.translate("PRD", prdName));
+		
+		String buyerName = out.getBuyerName();
+		out.setBuyerName(SDicHelper.translate("BUYER", buyerName));
+		
 		out.save();
 		redirect("/sale/?salesOut.car_type=" + out.getCarType());
 	}
@@ -55,6 +73,15 @@ public class SaleController extends Controller {
 		int para =  getParaToInt("id");
 		SalesOut sale = SalesOut.dao.findById(para);
 		setAttr("salesOut", sale);
+		
+		String inputTime = sale.getInputDate() + " " + sale.getInputTime();
+		if((Integer)getSessionAttr("admin") != 1){
+			if(TimeUtil.subHours(inputTime, Integer.parseInt(PropKit.get("updateHous"))) > 0){
+				setAttr("erroMsg", "录入时间超过" + PropKit.get("updateHous") + "小时，请联系管理员修改");
+				renderJsp("/WEB-INF/mvcs/erroMsg.jsp");
+				return;
+			}		
+		}
 		
 		String page =  getPara("page");
 
@@ -68,7 +95,21 @@ public class SaleController extends Controller {
 	
 	public void update() {
 		SalesOut out = getModel(SalesOut.class);
-		getModel(SalesOut.class).update();
+		
+		String carNo = out.getCarNo();
+		out.setCarNo(SDicHelper.translate("CAR", carNo));
+		
+		String driver = out.getDriver();
+		out.setDriver(SDicHelper.translate("DRIVER", driver));
+		
+		String prdName = out.getPrdName();
+		out.setPrdName(SDicHelper.translate("PRD", prdName));
+		
+		String buyerName = out.getBuyerName();
+		out.setBuyerName(SDicHelper.translate("BUYER", buyerName));
+		
+		out.update();
+
 		redirect("/sale/?salesOut.car_type=" + out.getCarType());
 
 	}

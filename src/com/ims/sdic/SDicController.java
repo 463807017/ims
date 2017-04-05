@@ -2,11 +2,13 @@ package com.ims.sdic;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import com.ims.common.service.BuyIn;
 import com.ims.common.service.SDic;
 import com.ims.util.StringUtil;
+import com.ims.util.dic.SDicHelper;
 import com.jfinal.core.Controller;
 
 /**
@@ -15,67 +17,89 @@ import com.jfinal.core.Controller;
 public class SDicController extends Controller {
 	public void index() {
 		StringBuffer condition = new StringBuffer();
-		BuyIn buyIn = getModel(BuyIn.class);
-		setAttr("buyIn", buyIn);
-		if(buyIn != null){
+		SDic sDic = getModel(SDic.class);
+		setAttr("sDic", sDic);
+		if(sDic != null){
 			condition.append(" where 1=1 ");
-			if(!StringUtil.isNull(buyIn.getInputDate())){
-				condition.append(" and input_date like '%" + buyIn.getInputDate() + "%'");
+			if(!StringUtil.isNull(sDic.getCh())){
+				condition.append(" and ch like '%").append(sDic.getCh()).append("%'");
 			}
-			if(!StringUtil.isNull(buyIn.getCarNo())){
-				condition.append(" and car_no like '%" + buyIn.getCarNo() + "%'");
+			
+			if(!StringUtil.isNull(sDic.getEn())){
+				condition.append(" and en like '%").append(sDic.getEn()).append("%'");
 			}
+			
+			if(!StringUtil.isNull(sDic.getOp())){
+				condition.append(" and op='").append(sDic.getOp()).append("'");
+			}
+			
 		}
-		setAttr("page", BuyIn.dao.paginate(getParaToInt(0, 1), 5,condition.toString()));
-		render("/WEB-INF/mvcs/buyin/buyin.html");
+		setAttr("page", SDic.dao.paginate(getParaToInt(0, 1), 5,condition.toString()));
+		render("/WEB-INF/mvcs/sdic/sdic.html");
 	}
 	
 	public void dicJson() {
 		String op = getPara("op");
-		List<SDic> sdic = SDic.dao.find("select ch from s_dic where op=?", op);
-		List<String> list = new ArrayList<String>(sdic==null?0:sdic.size());
-		for (SDic d : sdic) {
-			list.add(d.getCh());
+		List<HashMap<String,String>> list = new ArrayList<HashMap<String,String>>();
+		HashMap<String,String> dicMap = SDicHelper.getOneDic(op);
+		if(dicMap == null){
+			renderJson("[]");
+			return;
 		}
-		renderJson(list);
+		
+		if(SDicHelper.getOneDic("OP_TYPE").containsKey(op)){
+			ArrayList<String> names = new ArrayList<String>();
+			for (String temp : dicMap.keySet()) {
+				HashMap<String,String> m = new HashMap<String, String>();
+				names.add(dicMap.get(temp));
+			}
+			renderJson(names);
+			return;
+		}else{
+			for (String temp : dicMap.keySet()) {
+				HashMap<String,String> m = new HashMap<String, String>();
+				m.put("id", temp);
+				m.put("text", dicMap.get(temp));
+				list.add(m);
+			}
+		}
+		
+		if(list != null && list.size() > 0)
+			renderJson(list);
+		else
+			renderJson("[]");
 	}
 	
 	public void add() {
-		render("/WEB-INF/mvcs/buyin/buyinadd.html");
+		render("/WEB-INF/mvcs/sdic/add.html");
 	}
 	
 	public void save() {
-		BuyIn in = getModel(BuyIn.class);
-		in.setInputDate(StringUtil.getDate(null));
-		in.setInputTime(StringUtil.getTime(null));
-		in.save();
-		redirect("/buy/");
+		SDic dic = getModel(SDic.class);
+		SDicHelper.addOrUpd(dic.getOp(), dic.getEn(), dic.getCh());
+		dic.save();
+		
+		redirect("/sdic?sDic.op=" + dic.getOp());
 	}
 	
 	public void edit() {
-		int para =  getParaToInt("id");
-		BuyIn buyin = BuyIn.dao.findById(para);
-		setAttr("buyin", buyin);
-		
-		String page =  getPara("page");
-
-		if(StringUtil.isNull(page)){
-			render("/WEB-INF/mvcs/buyin/add.html");
-		}else{
-			render("/WEB-INF/mvcs/buyin/" + page + ".html");
-		}
-
+		SDic dic = getModel(SDic.class);
+		dic = dic.dao.findById(dic.getEn(),dic.getOp());
+		setAttr("sDic", dic );
+		render("/WEB-INF/mvcs/sdic/add.html");
 	}
 	
 	public void update() {
-		getModel(BuyIn.class).update();
-		redirect("/buyin/");
+		SDic dic = getModel(SDic.class);
+		SDicHelper.addOrUpd(dic.getOp(), dic.getEn(), dic.getCh());
+		dic.update();
+		redirect("/sdic?sDic.op=" + dic.getOp());
 	}
 	
 	public void delete() {
-		int para =  getParaToInt("id");
-		BuyIn.dao.deleteById(para);
-		redirect("/buyin/");
+		SDic dic = getModel(SDic.class);
+		dic.dao.deleteById(dic.getEn(),dic.getOp());
+		redirect("/sdic?sDic.op=" + dic.getOp());
 	}
 	
 	

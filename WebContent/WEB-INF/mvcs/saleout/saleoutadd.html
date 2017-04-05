@@ -58,7 +58,7 @@
                                                    		<div class="control-group">
                                                             <label class="control-label" for="inputAuto">产品名</label>
                                                             <div class="controls">
-                                                                <input type="hidden" id="prdName" name="salesOut.prd_name" style="width:200px;height: 30px;" value="#(salesOut.prd_name)" class="grd-white" />
+                                                                <input type="hidden" id="prdName" name="salesOut.prd_name" style="width:200px;height: 30px;"  class="grd-white" />
                                                             </div>
                                                         </div>
                                                         
@@ -94,7 +94,7 @@
                                                         <div class="control-group">
                                                             <label class="control-label" for="inputAuto">购货方</label>
                                                             <div class="controls">
-                                                                <input value="#(salesOut.buyer_name)" style="height: 30px;" type="text" name="salesOut.buyer_name" class="grd-white" />
+                                                                <input id="buyer_name" value="#(salesOut.buyer_name)" style="height: 30px;width: 200px;" type="text" name="salesOut.buyer_name" class="grd-white" />
                                                             </div>
                                                         </div>
                                                         
@@ -138,6 +138,7 @@
         
         <!-- required stilearn template js, for full feature-->
         <script src="../js/holder.js"></script>
+        <script src="../js/stilearn-base.js"></script>
 
         <script type="text/javascript">
             $(document).ready(function() {
@@ -162,6 +163,7 @@
                        }
                  });
 
+
                 $.ajax({
                     type: "POST",
                     url: "../sdic/dicJson",
@@ -170,6 +172,17 @@
                 		$('#driver').select2({tags:data});
                        }
                  });
+
+                
+                $.ajax({
+                    type: "POST",
+                    url: "../sdic/dicJson",
+                    data: "op=BUYER",
+                    success: function(data){
+                		$('#buyer_name').select2({tags:data});
+                       }
+                 });
+
                 // select2
                 //$('[data-form=select2]').select2();
                 //$('[data-form=select2-group]').select2();

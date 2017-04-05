@@ -61,31 +61,39 @@
                                                                 <input id="carNo" value="#(buyIn.car_no)" style="height: 30px;width: 200px;" type="text" name="buyIn.car_no" class="grd-white"  />
                                                             </div>
                                                         </div>
+                                                        
+                                                         <div class="control-group">
+                                                            <label class="control-label" for="inputAuto">驾驶员</label>
+                                                            <div class="controls">
+                                                                <input id="driver" value="#(buyIn.driver)" style="height: 30px;width: 200px;" type="text" name="buyIn.driver" class="grd-white"  />
+                                                            </div>
+                                                        </div>
+                                                        
                                                         <div class="control-group">
                                                             <label class="control-label" for="inputAuto">毛重</label>
                                                             <div class="controls">
-                                                                <input value="#(buyIn.mao_heavy)" style="height: 30px;" type="text" name="buyIn.mao_heavy" class="grd-white" />
+                                                                <input id="mao_heavy" onchange="count()" value="#(buyIn.mao_heavy)" style="height: 30px;" type="text" name="buyIn.mao_heavy" class="grd-white" />
                                                             </div>
                                                         </div>
                                                         
                                                         <div class="control-group">
                                                             <label class="control-label" for="inputAuto">皮重</label>
                                                             <div class="controls">
-                                                                <input value="#(buyIn.pi_heavy)" style="height: 30px;" type="text" name="buyIn.pi_heavy" class="grd-white" />
+                                                                <input id="pi_heavy" onchange="count()" value="#(buyIn.pi_heavy)" style="height: 30px;" type="text" name="buyIn.pi_heavy" class="grd-white" />
                                                             </div>
                                                         </div>
                                                         
                                                         <div class="control-group">
                                                             <label class="control-label" for="inputAuto">净重</label>
                                                             <div class="controls">
-                                                                <input value="#(buyIn.jin_heavy)" style="height: 30px;" type="text" name="buyIn.jin_heavy" class="grd-white" />
+                                                                <input id="jin_heavy" readonly="readonly" value="#(buyIn.jin_heavy)" style="height: 30px;" type="text" name="buyIn.jin_heavy" class="grd-white" />
                                                             </div>
                                                         </div>
                                                         
                                                         <div class="control-group">
                                                             <label class="control-label" for="inputAuto">出货方</label>
                                                             <div class="controls">
-                                                                <input value="#(buyIn.saler_name)" style="height: 30px;" type="text" name="buyIn.saler_name" class="grd-white"  data-validate="{required: true, messages:{required:'出货方不能为空'}}"/>
+                                                                <input id="saler_name" value="#(buyIn.saler_name)" style="height: 30px;width: 200px;" type="text" name="buyIn.saler_name" class="grd-white"  data-validate="{required: true, messages:{required:'出货方不能为空'}}"/>
                                                             </div>
                                                         </div>
                                                         
@@ -118,6 +126,7 @@
         <script src="../js/wizard/jquery.ui.widget.js"></script> <!-- this required for jquery.wizard-->
         <script src="../js/wizard/jquery.wizard.js"></script>
         <script src="../js/responsive-tables/responsive-tables.js"></script>
+        <script src="../js/stilearn-base.js"></script>
         
         <!-- required stilearn template js, for full feature-->
         <script src="../js/holder.js"></script>
@@ -135,7 +144,37 @@
                 		$('#carNo').select2({tags:data});
                        }
                  });
+                
+                $.ajax({
+                    type: "POST",
+                    url: "../sdic/dicJson",
+                    data: "op=SALER",
+                    success: function(data){
+                		$("#saler_name").select2({tags:data});
+                       }
+                 });
+                
+                $.ajax({
+                    type: "POST",
+                    url: "../sdic/dicJson",
+                    data: "op=DRIVER",
+                    success: function(data){
+                		$("#driver").select2({tags:data});
+                       }
+                 });
+                
             });
+            
+            function count(){
+            	var mao_heavy = $("#mao_heavy");
+            	var jin_heavy = $("#jin_heavy");
+            	var pi_heavy = $("#pi_heavy");
+            	if(pi_heavy.val() == '') pi_heavy.val('0');
+            	if(mao_heavy.val() == '') mao_heavy.val('0');
+            	
+            	jin_heavy.val((parseFloat(mao_heavy.val()) - parseFloat(pi_heavy.val())).toFixed(4));
+
+            }
       
         </script>
 </html>

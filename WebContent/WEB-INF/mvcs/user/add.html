@@ -52,30 +52,30 @@
                                                 <!--box body-->
                                                 <div class="box-body">
                                                     <!--element-->
-                                                    <form id="form-validate" class="form-horizontal" action="#if(user==null)save#else update#end" onsubmit="return $('#form-validate').validate(); "  method="post"/>
-                                                        <input value="#(user.id)" style="height: 30px;" type="hidden" name="sUser.id" class="grd-white"   />
+                                                    <form id="form-validate" class="form-horizontal" action="#if(sUser==null)save#else update#end" onsubmit="return $('#form-validate').validate(); "  method="post"/>
+                                                        <input value="#(sUser.id)" style="height: 30px;" type="hidden" name="sUser.id" class="grd-white"   />
                                                     
                                                         <div class="control-group">
                                                             <label class="control-label" for="inputAuto">姓名</label>
                                                             <div class="controls">
-                                                                <input value="#(user.name)" style="height: 30px;" type="text" name="sUser.name" class="grd-white" data-validate="{required: true, messages:{required:'姓名不能为空'}}" />
+                                                                <input value="#(sUser.name)" style="height: 30px;" type="text" name="sUser.name" class="grd-white" data-validate="{required: true, messages:{required:'姓名不能为空'}}" />
                                                             </div>
                                                         </div>
                                                         <div class="control-group">
                                                             <label class="control-label" for="inputAuto">登录名</label>
                                                             <div class="controls">
-                                                                <input value="#(user.login_name)" style="height: 30px;" type="text" name="sUser.login_name" class="grd-white" data-validate="{required: true, minlength: 6, messages:{required:'登录名不能为空', minlength:'登录名小于6位'}}"/>
+                                                                <input onchange="loginName(this.value)" value="#(sUser.login_name)" style="height: 30px;" type="text" name="sUser.login_name" class="grd-white" data-validate="{required: true, minlength: 5, messages:{required:'登录名不能为空', minlength:'登录名小于6位'}}"/>
                                                             </div>
                                                         </div>
                                                         
                                                         <div class="control-group">
                                                             <label class="control-label" for="inputAuto">密码</label>
                                                             <div class="controls">
-                                                                <input value="#(user.login_passwd)" style="height: 30px;" type="text" name="sUser.login_passwd" class="grd-white" data-validate="{required: true, minlength: 6, messages:{required:'密码不能为空', minlength:'密码小于6位'}}"/>
+                                                                <input value="#(sUser.login_passwd)" style="height: 30px;" type="text" name="sUser.login_passwd" class="grd-white" data-validate="{required: true, minlength: 6, messages:{required:'密码不能为空', minlength:'密码小于6位'}}"/>
                                                             </div>
                                                         </div>
                                                         <div class="form-actions">
-                                                            <button type="submit" class="btn btn-primary" >#if(user==null)新增#else 更新#end</button>
+                                                            <button type="submit" class="btn btn-primary" >#if(sUser==null)新增#else 更新#end</button>
                                                             <button type="button" class="btn" onclick="javascript:window.history.back();">返回</button>
                                                         </div>
                                                     </form>
@@ -104,12 +104,36 @@
         
         <!-- required stilearn template js, for full feature-->
         <script src="../js/holder.js"></script>
+        <script src="../js/stilearn-base.js"></script>
 
         <script type="text/javascript">
             $(document).ready(function() {
             	 // validate form
                 $('#form-validate').validate();
             });
-      
+            
+            var name = '#(sUser.login_name)';
+            function loginName(val){
+            	if(name == val) return;
+            	
+            	$.ajax({
+                    type: "POST",
+                    url: "hasLoingName",
+                    data: {"login_name":val},
+                    success: function(data){
+                		if(data.flag > 0){
+                			alert('登录名重复不可用');
+                			if(name != ''){
+                    			$("input[name='sUser.login_name']").val(name);
+                			}else{
+                    			$("input[name='sUser.login_name']").val(null);
+                			}
+                		}
+                       },
+                    error: function(){
+                    	   alert('系统异常');
+                    }
+                 });
+            }
         </script>
 </html>

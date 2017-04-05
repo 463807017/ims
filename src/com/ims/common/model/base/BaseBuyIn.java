@@ -1,5 +1,7 @@
 package com.ims.common.model.base;
 
+import java.math.BigDecimal;
+
 import com.jfinal.plugin.activerecord.Model;
 import com.jfinal.plugin.activerecord.IBean;
 
@@ -8,6 +10,15 @@ import com.jfinal.plugin.activerecord.IBean;
  */
 @SuppressWarnings({"serial", "unchecked"})
 public abstract class BaseBuyIn<M extends BaseBuyIn<M>> extends Model<M> implements IBean {
+	
+	public M setDriver(java.lang.String driver) {
+		set("driver", driver);
+		return (M)this;
+	}
+
+	public java.lang.String getDriver() {
+		return get("driver");
+	}
 	
 	public M setBuyType(java.lang.Integer buyType) {
 		set("buy_type", buyType);
@@ -54,30 +65,30 @@ public abstract class BaseBuyIn<M extends BaseBuyIn<M>> extends Model<M> impleme
 		return get("car_no");
 	}
 
-	public M setMaoHeavy(java.lang.Long maoHeavy) {
+	public M setMaoHeavy(BigDecimal maoHeavy) {
 		set("mao_heavy", maoHeavy);
 		return (M)this;
 	}
 
-	public java.lang.Long getMaoHeavy() {
+	public BigDecimal getMaoHeavy() {
 		return get("mao_heavy");
 	}
 
-	public M setPiHeavy(java.lang.Long piHeavy) {
+	public M setPiHeavy(BigDecimal piHeavy) {
 		set("pi_heavy", piHeavy);
 		return (M)this;
 	}
 
-	public java.lang.Long getPiHeavy() {
+	public BigDecimal getPiHeavy() {
 		return get("pi_heavy");
 	}
 
-	public M setJinHeavy(java.lang.Long jinHeavy) {
+	public M setJinHeavy(BigDecimal jinHeavy) {
 		set("jin_heavy", jinHeavy);
 		return (M)this;
 	}
 
-	public java.lang.Long getJinHeavy() {
+	public BigDecimal getJinHeavy() {
 		return get("jin_heavy");
 	}
 

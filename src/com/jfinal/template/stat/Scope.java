@@ -21,6 +21,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.ims.util.StringUtil;
+
 /**
  * Scope
  * 1：顶层 scope.parent 为 null
@@ -90,7 +92,10 @@ public class Scope {
 				if(cur.data.containsKey(key)) return cur.data.get(key);
 				
 				HttpServletRequest  request = (HttpServletRequest)cur.data.get("request");
+				//先从url参数中获取  在从request中获取 session中获取
 				if(request == null) break;
+				ret = request.getParameter((String)key);
+				if(ret != null) return ret;
 				ret = request.getAttribute((String)key);
 				if(ret == null){
 					ret = request.getSession().getAttribute((String)key);

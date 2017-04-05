@@ -12,14 +12,14 @@
         <link href="http://fonts.googleapis.com/css?family=Aclonica:regular" rel="stylesheet" type="text/css" />
         
         <!-- styles -->
-        <link href="css/bootstrap.css" rel="stylesheet" />
-        <link href="css/bootstrap-responsive.css" rel="stylesheet" />
-        <link href="css/stilearn.css" rel="stylesheet" />
-        <link href="css/stilearn-responsive.css" rel="stylesheet" />
-        <link href="css/stilearn-helper.css" rel="stylesheet" />
-        <link href="css/stilearn-icon.css" rel="stylesheet" />
-        <link href="css/font-awesome.css" rel="stylesheet" />
-        <link href="css/animate.css" rel="stylesheet" />
+        <link href="/css/bootstrap.css" rel="stylesheet" />
+        <link href="/css/bootstrap-responsive.css" rel="stylesheet" />
+        <link href="/css/stilearn.css" rel="stylesheet" />
+        <link href="/css/stilearn-responsive.css" rel="stylesheet" />
+        <link href="/css/stilearn-helper.css" rel="stylesheet" />
+        <link href="/css/stilearn-icon.css" rel="stylesheet" />
+        <link href="/css/font-awesome.css" rel="stylesheet" />
+        <link href="/css/animate.css" rel="stylesheet" />
         
         <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
         <!--[if lt IE 9]>
@@ -62,8 +62,8 @@
 
         <!-- javascript
         ================================================== -->
-        <script src="js/jquery.js"></script>
-        <script src="js/bootstrap.js"></script>
+        <script src="/js/jquery.js"></script>
+        <script src="/js/bootstrap.js"></script>
         
         <script type="text/javascript">
             $(document).ready(function() {

@@ -4,12 +4,14 @@ import com.ims.User.UserController;
 import com.ims.User.UserInterceptor;
 import com.ims.blog.BlogController;
 import com.ims.buy.BuyController;
+import com.ims.cron4j.ExportExcelJob;
 import com.ims.index.IndexController;
 import com.ims.interceptor.ExceptionInterceptor;
 import com.ims.resource.ResourceController;
 import com.ims.role.RoleController;
 import com.ims.sales.SaleController;
 import com.ims.sdic.SDicController;
+import com.ims.util.dic.SDicHelper;
 import com.jfinal.config.Constants;
 import com.jfinal.config.Handlers;
 import com.jfinal.config.Interceptors;
@@ -19,6 +21,7 @@ import com.jfinal.config.Routes;
 import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.activerecord.tx.TxByMethodRegex;
+import com.jfinal.plugin.cron4j.Cron4jPlugin;
 import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.template.Engine;
 
@@ -30,7 +33,6 @@ import com.jfinal.template.Engine;
  */
 public class ImsConfig extends JFinalConfig {
 	
-	
 	/**
 	 * 配置常量
 	 */
@@ -38,7 +40,15 @@ public class ImsConfig extends JFinalConfig {
 		// 加载少量必要配置，随后可用PropKit.get(...)获取值
 		PropKit.use("ims.properties");
 		me.setDevMode(PropKit.getBoolean("devMode", false));
-	}
+		
+		me.setError404View("404.html");
+		me.setError500View("500.html");
+		me.setError403View("403.html");
+
+
+
+
+		}
 	
 	/**
 	 * 配置路由
@@ -58,6 +68,9 @@ public class ImsConfig extends JFinalConfig {
 	public void configEngine(Engine me) {
 		me.addSharedFunction("/WEB-INF/mvcs/common/_layout.html");
 		me.addSharedFunction("/WEB-INF/mvcs/common/_paginate.html");
+		me.addSharedFunction("/WEB-INF/mvcs/common/permission.html");
+		me.addSharedFunction("/WEB-INF/mvcs/common/sdic.html");
+		
 	}
 	
 	public static DruidPlugin createDruidPlugin() {
@@ -77,6 +90,11 @@ public class ImsConfig extends JFinalConfig {
 		// 所有映射在 MappingKit 中自动化搞定
 		_MappingKit.mapping(arp);
 		me.add(arp);
+		
+		//
+		 Cron4jPlugin cp = new Cron4jPlugin("job.properties");
+		 me.add(cp);
+		
 	}
 	
 	/**
@@ -97,4 +115,15 @@ public class ImsConfig extends JFinalConfig {
 	public void configHandler(Handlers me) {
 		
 	}
+
+	@Override
+	public void afterJFinalStart() {
+		
+		//加载数据字典
+		SDicHelper.loadDic();
+		
+		super.afterJFinalStart();
+	}
+	
+	
 }

@@ -1,11 +1,13 @@
 $(function(){
     // control-mode. control for top and side mode (fixed or normal), you can remove it if you want..
+	/*
     var control_mode = '<div class="control-mode" id="control-mode">'
     +'    <ul class="choice-mode grd-teal corner-bl hide">'
     +'        <li><a id="fixedsideonly-mode" href="logout/">退出</a></li>'
     +'    </ul>'
     +'    <div class="navigate-mode"><a href="#" class="grd-teal corner-bottom"><i class="typicn-cog"></i></a></div>'
     +'</div>';
+    
     
     $('body').append(control_mode)
     if(sessionStorage.mode == undefined){
@@ -138,6 +140,7 @@ $(function(){
     }
     
     // end control-mode
+    */
     
     // control for responsive
     $(window).resize(function(){

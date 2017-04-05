@@ -8,4 +8,8 @@ import com.ims.common.model.base.BaseSDic;
 @SuppressWarnings("serial")
 public class SDic extends BaseSDic<SDic> {
 	public static final SDic dao = new SDic().dao();
+
+	public Object paginate(Integer pageNumber, int pageSize, String condition) {
+		return paginate(pageNumber, pageSize, "select *", "from s_dic " + condition + " order by en desc");
+	}
 }

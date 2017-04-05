@@ -1,0 +1,5 @@
+#define permission(menuId,op,roles,output)
+	#if(com.ims.common.service.SRole::hasPrivilege(menuId,op,roles))
+		#(output)
+	#end
+#end

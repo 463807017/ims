@@ -43,10 +43,6 @@
                                             <div class="box corner-all">
                                                 <!--box header-->
                                                 <div class="box-header grd-white color-silver-dark corner-top">
-                                                    <div class="header-control">
-                                                        <a data-box="collapse"><i class="icofont-caret-up"></i></a>
-                                                        <a data-box="close">&times;</a>
-                                                    </div>
                                                     <span>编辑菜单</span>
                                                 </div><!--/box header-->
                                                 <!--box body-->
@@ -84,13 +80,108 @@
                                                         
                                                         <div class="form-actions">
                                                             <button type="button" class="btn btn-primary" onclick="doSubmit()" >#if(sResource.id==null)新增#else 更新#end</button>
+                                                            <button type="button" class="btn btn-primary"  data-toggle="modal" data-target="#roleAdd" onclick="showAddRole()">新增角色权限</button>
+                                                            <button type="button" class="btn btn-primary"  onclick="updateRole()">修改角色权限</button>
+                                                            
+                                                            <!-- 按钮触发模态框 -->
                                                         </div>
+                                                        
                                                     </form>
                                                     <!--/element-->
                                                 </div><!--/box body-->
                                             </div><!--/box-->
                                         </div><!--/span--> 
                                     </div><!--/element-->
+                                    
+                                      <div class="row-fluid">
+                                <div class="span12">
+                                    <div class="box corner-all">
+                                        <div class="box-header grd-white corner-top">
+                                            <div class="header-control">
+                                                <a data-box="collapse"><i class="icofont-caret-up"></i></a>
+                                                <a data-box="close" data-hide="bounceOutRight">&times;</a>
+                                            </div>
+                                            <span>角色管理</span>
+                                        </div>
+                                        <div class="box-body">
+                                            <table id="data_list" class="table table-hover responsive">
+                                              <thead>
+                                                    <tr>
+                                                        <th>角色编号</th>
+                                                        <th>名称</th>
+                                                        <th>权限</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    #for(role : roleLists)
+												<tr class="gradeA">
+                                                        <td>#(role[0])</td>
+                                                        <td>#(role[1])</td>
+                                                        <td value="#(role[2])">#@dicMany('RIGHT',role[2])</td>
+                                                    </tr>
+												#end
+                                                </tbody>
+                                            </table>
+                                        </div><!-- /box-body -->
+                                    </div><!-- /box -->
+                                </div><!-- /span -->
+                            </div><!--/hover-->
+                            
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="roleAdd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">新增角色权限</h4>
+            </div>
+            <!--element-->
+                                                    <form id="form-role" class="form-horizontal" action="" onsubmit=""  method="post"/>
+                                                       <div class="control-group">
+                                                            <label class="control-label" for="inputAuto">资源编号</label>
+                                                            <div class="controls">
+                                                                <input readonly="readonly" value="#(sResource.id)" style="height: 30px;" type="text" name="resource_id" class="grd-white"  />
+                                                            </div>
+                                                        </div>
+                                                        
+                                                         <div class="control-group">
+                                                            <label class="control-label" for="inputAuto">资源名称</label>
+                                                            <div class="controls">
+                                                                <input readonly="readonly" value="#(sResource.name)" style="height: 30px;" type="text" name="" class="grd-white"  />
+                                                            </div>
+                                                        </div>
+                                                    
+                                                        <div id="addDiv" class="control-group">
+                                                            <label class="control-label" for="inputAuto">角色编号</label>
+                                                            <div class="controls">
+                                                                <input id="role_id"  value="" style="width:200px;height: 30px;" type="text" name="role_ids" class="grd-white"  />
+                                                            </div>
+                                                        </div>
+                                                        
+                                                         <div id="updDiv" class="control-group">
+                                                            <label class="control-label" for="inputAuto">角色编号</label>
+                                                            <div class="controls">
+                                                                 <input id="role_id_upd" readonly="readonly"  value="" style="width:200px;height: 30px;" type="text" name="" class="grd-white"  />
+                                                                
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        
+                                                        <div class="control-group">
+                                                            <label class="control-label" for="inputAuto">权限</label>
+                                                            <div class="controls">
+                                                                <input id="right_id" value=""  style="width:200px;height: 30px;" type="text" name="op_flgs" class="grd-white" />
+                                                            </div>
+                                                        </div>
+                                                        
+            <div class="modal-footer">
+                <button id="roleAddColse" type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button id="roleButton" type="button" class="btn btn-primary" >新增</button>
+            </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
                                     
 	</body>
 	<script src="../js/jquery.js"></script>
@@ -113,10 +204,31 @@
         <script src="../js/holder.js"></script>
 
         <script type="text/javascript">
+        
+        
             $(document).ready(function() {
             	 // validate form
                 $('#form-validate').validate();
-            });
+            	 
+                $.ajax({
+                    type: "POST",
+                    url: "../sdic/dicJson",
+                    data: "op=RIGHT",
+                    success: function(data){
+                		$('#right_id').select2({tags:data});
+                       }
+                 });
+                
+                $.ajax({
+                    type: "POST",
+                    url: "../role/roleJson",
+                    data: "",
+                    success: function(data){
+                		$('#role_id').select2({tags:data});
+                       }
+                 });
+            });  
+
             
             
             function doSubmit(){
@@ -135,6 +247,129 @@
                     }
                  });
             }
+            
+            function showAddRole(){
+            	$("#role_id").val(null).trigger("change");
+            	$("#right_id").val(null).trigger("change");
+            	
+            	
+            	$('#addDiv').show();
+            	$('#updDiv').hide();
+            	
+            	$('#roleButton').text('新增');
+            	$('#roleButton').unbind("click");
+            	$('#roleButton').bind("click", doAddRole);
+            };
       
+            function doAddRole(){
+            	var data = $("#form-role").serializeArray();
+            	
+            	$.ajax({
+                    type: "POST",
+                    url: "../role/addRoleRight",
+                    data: data,
+                    success: function(data1){
+                    	var flag = data1.flag;
+                    	alert(flag);
+                    	location.reload();
+                    	/*
+                    	$('#roleAdd').modal('hide');
+                    	$("#role_id").val(null).trigger("change");
+                    	$("#right_id").val(null).trigger("change");
+						*/
+                       },
+                    error: function(msg){
+                 	   alert('系统异常');
+                    }
+                 });
+            	
+            };
+            
+            function updateRole(){
+            	if(tableSelectedIndex == null){
+            		alert('请选择一条记录');
+            		return;
+            	}
+            	
+            	$("#role_id").val(tableSelectedData[0]).trigger("change");
+           		$('#role_id_upd').val(tableSelectedData[1]);
+           		
+            	$("#right_id").val(tableSelectedData[2]).trigger("change");
+            	
+            	
+            	$('#role_id').removeAttr("readonly");
+
+            	$('#roleButton').unbind("click");
+            	$('#roleButton').bind("click", doUpdateRole);
+            	
+            	$('#addDiv').hide();
+            	$('#updDiv').show();
+            	
+            	
+            	$('#roleButton').text('修改');
+
+            	$('#roleAdd').modal('show');
+
+            	/*
+            	$.ajax({
+                    type: "POST",
+                    url: "../role/editRoleRight",
+                    data: {"role_id":tableSelectedData[0],"resource_id":#(sResource.id)},
+                    success: function(data){
+                    	
+                    	
+
+                       },
+                    error: function(msg){
+                 	   alert('系统异常');
+                    }
+                 });
+            	*/
+
+            };
+            
+            function doUpdateRole(){
+           	 var data = $("#form-role").serializeArray();
+
+            	$.ajax({
+                    type: "POST",
+                    url: "../role/updateRoleRight",
+                    data: data,
+                    success: function(data1){
+                    	alert(data1.flag);
+                    	//$('#roleAdd').modal('hide');
+                    	location.reload();
+                       },
+                    error: function(msg){
+                 	   alert('系统异常');
+                    }
+                 });
+            }
+            
+            var tableSelectedData = [];
+	        var tableSelectedIndex = null;
+	        $(document).ready(function(){
+	        	$("#data_list tbody tr").each(function(index){
+	        		var currentEle = $(this);  
+	                currentEle.click(function(){
+	        	        if(tableSelectedIndex == index) return;
+	        	        if(tableSelectedIndex != null){
+	            	        $("#data_list tbody tr").eq(tableSelectedIndex).css("background-color","");
+	        	        }
+	                  currentEle.css("background-color","#faf2cc"); 
+	                  tableSelectedIndex = index;
+	
+	                  currentEle.children().each(function(indexTd){
+	                	  if($(this).attr("value") == undefined){
+	                		  var val = $(this).text();
+		        	          tableSelectedData[indexTd] = val;
+	                	  }else{
+		        	          tableSelectedData[indexTd] = $(this).attr("value");
+	                	  }
+	        	          
+	                  });
+	                });  
+	        	});
+	        });
         </script>
 </html>

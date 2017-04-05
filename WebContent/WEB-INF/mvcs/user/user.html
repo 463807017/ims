@@ -64,10 +64,17 @@
                                                         </div>
                                                         
                                                         <div class="form-actions center">
-                                                            <button type="submit" class="btn btn-primary" >查询</button>
-                                                            <button type="button" class="btn btn-primary" onclick="doAdd()" >新增</button>
-                                                            <button type="button" class="btn btn-primary" onclick="doUpd()">修改</button>
-                                                            <button type="button" class="btn btn-primary" onclick="doDel()">删除</button>
+                                                        #@permission(menuId,0,roles,'
+                                                            <button type="submit" class="btn btn-primary" >查询</button>'
+                                                            )
+                                                          #@permission(menuId,1,roles,'
+                                                            <button type="button" class="btn btn-primary" onclick="doAdd()" >新增</button>')
+                                                             #@permission(menuId,2,roles,'
+                                                            <button type="button" class="btn btn-primary" onclick="doUpd()">修改</button>')
+                                                             #@permission(menuId,3,roles,'
+                                                            <button type="button" class="btn btn-primary" onclick="doDel()">删除</button>')
+                                                             #@permission(menuId,9,roles,'
+                                                            <button type="button" class="btn btn-primary" onclick="doSetRole()">角色设置</button>')
                                                         </div>
                                                     </form>
                                                     <!--/element-->
@@ -93,8 +100,8 @@
                                                     <tr>
                                                         <th>客户号</th>
                                                         <th>姓名</th>
-                                                        <th>登录名)</th>
-                                                        <th>登录时间</th>
+                                                        <th>登录名</th>
+                                                        <th>录入时间</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -103,7 +110,7 @@
                                                         <td>#(x.id)</td>
                                                         <td>#(x.name)</td>
                                                         <td>#(x.login_name)</td>
-                                                        <td #(x.input_time)</td>
+                                                        <td>#(x.input_time)</td>
                                                     </tr>
 												#end
                                                 </tbody>
@@ -130,6 +137,7 @@
         
         <!-- required stilearn template js, for full feature-->
         <script src="../js/holder.js"></script>
+        <script src="../js/stilearn-base.js"></script>
 
         <script type="text/javascript">
 	        var tableSelectedData = [];
@@ -172,6 +180,14 @@
             	}
             	location.href = "delete?id=" + tableSelectedData[0];
         	}
+			
+			function doSetRole(){
+				if(tableSelectedIndex == null){
+                	alert("请选择一条记录");
+                	return;
+            	}
+            	location.href = "queryRole?id=" + tableSelectedData[0];
+			}
         </script>
     </body>
 </html>

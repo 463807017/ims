@@ -50,6 +50,8 @@ public class TemplateRender extends Render {
 		response.setContentType(getContentType());
         
 		Map<Object, Object> data = new HashMap<Object, Object>();
+		Object menuId = request.getParameter("menuId");
+		if(menuId != null) request.getSession().setAttribute("menuId", menuId);
 		data.put("request", request);//把request放进去
 //		for (Enumeration<String> attrs=request.getAttributeNames(); attrs.hasMoreElements();) {
 //			String attrName = attrs.nextElement();

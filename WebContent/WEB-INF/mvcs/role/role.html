@@ -40,10 +40,10 @@
                                             <div class="box corner-all" style="margin-bottom:0px;">
                                                 <!--box header-->
                                                 <div class="box-header grd-white color-silver-dark corner-top">
-                                                    <div class="header-control">
-                                                        <a data-box="collapse"><i class="icofont-caret-up"></i></a>
-                                                        <a data-box="close">&times;</a>
-                                                    </div>
+                                                 <div class="header-control">
+	                                                <a data-box="collapse"><i class="icofont-caret-up"></i></a>
+	                                                <a data-box="close" data-hide="bounceOutRight">&times;</a>
+	                                            </div>
                                                     <span>查询条件</span>
                                                 </div><!--/box header-->
                                                 <!--box body-->
@@ -58,10 +58,14 @@
                                                         </div>
                                                         
                                                         <div class="form-actions center">
-                                                            <button type="submit" class="btn btn-primary" >查询</button>
-                                                            <button type="button" class="btn btn-primary" onclick="doAdd()" >新增</button>
-                                                            <button type="button" class="btn btn-primary" onclick="doUpd()">修改</button>
-                                                            <button type="button" class="btn btn-primary" onclick="doDel()">删除</button>
+                                                        	#@permission(menuId,0,roles,'
+                                                            <button type="submit" class="btn btn-primary" >查询</button>')
+                                                            #@permission(menuId,1,roles,'
+                                                            <button type="button" class="btn btn-primary" onclick="doAdd()" >新增</button>')
+                                                            #@permission(menuId,2,roles,'
+                                                            <button type="button" class="btn btn-primary" onclick="doUpd()">修改</button>')
+                                                            #@permission(menuId,3,roles,'
+                                                            <button type="button" class="btn btn-primary" onclick="doDel()">删除</button>')
                                                         </div>
                                                     </form>
                                                     <!--/element-->
@@ -79,7 +83,7 @@
                                                 <a data-box="collapse"><i class="icofont-caret-up"></i></a>
                                                 <a data-box="close" data-hide="bounceOutRight">&times;</a>
                                             </div>
-                                            <span>用户列表</span>
+                                            <span>角色列表</span>
                                         </div>
                                         <div class="box-body">
                                             <table id="data_list" class="table table-hover responsive">
@@ -121,6 +125,7 @@
         <script src="../js/datatables/extras/TableTools.min.js"></script>
         <script src="../js/datatables/DT_bootstrap.js"></script>
         <script src="../js/responsive-tables/responsive-tables.js"></script>
+        <script src="../js/stilearn-base.js"></script>
         
         <!-- required stilearn template js, for full feature-->
         <script src="../js/holder.js"></script>

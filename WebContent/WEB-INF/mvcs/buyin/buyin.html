@@ -41,9 +41,9 @@
                                                 <!--box header-->
                                                 <div class="box-header grd-white color-silver-dark corner-top">
                                                     <div class="header-control">
-                                                        <a data-box="collapse"><i class="icofont-caret-up"></i></a>
-                                                        <a data-box="close">&times;</a>
-                                                    </div>
+		                                                <a data-box="collapse"><i class="icofont-caret-up"></i></a>
+		                                                <a data-box="close" data-hide="bounceOutRight">&times;</a>
+		                                            </div>
                                                     <span>查询条件</span>
                                                 </div><!--/box header-->
                                                 <!--box body-->
@@ -65,11 +65,23 @@
                                                             
                                                         </div>
                                                         
+                                                        <div class="control-group">
+                                                            <label class="control-label" for="inputAuto">驾驶员</label>
+                                                            <div class="controls">
+                                                                <input type="text" value="#(buyIn.driver)" name="buyIn.driver" class="grd-white" />
+                                                            </div>
+                                                            
+                                                        </div>
+                                                        
                                                         <div class="form-actions center">
-                                                            <button type="submit" class="btn btn-primary" >查询</button>
-                                                            <button type="button" class="btn btn-primary" onclick="doAdd()" >新增</button>
-                                                            <button type="button" class="btn btn-primary" onclick="doUpd()">修改</button>
-                                                            <button type="button" class="btn btn-primary" onclick="doDel()">删除</button>
+                                                            #@permission(menuId,0,roles,'
+                                                            <button type="submit" class="btn btn-primary" >查询</button>')
+                                                             #@permission(menuId,1,roles,'
+                                                            <button type="button" class="btn btn-primary" onclick="doAdd()" >新增</button>')
+                                                             #@permission(menuId,2,roles,'
+                                                            <button type="button" class="btn btn-primary" onclick="doUpd()">修改</button>')
+                                                             #@permission(menuId,3,roles,'
+                                                            <button type="button" class="btn btn-primary" onclick="doDel()">删除</button>')
                                                         </div>
                                                     </form>
                                                     <!--/element-->
@@ -87,7 +99,7 @@
                                                 <a data-box="collapse"><i class="icofont-caret-up"></i></a>
                                                 <a data-box="close" data-hide="bounceOutRight">&times;</a>
                                             </div>
-                                            <span>用户列表</span>
+                                            <span>入库记录</span>
                                         </div>
                                         <div class="box-body">
                                             <table id="data_list" class="table table-hover responsive">
@@ -97,6 +109,7 @@
                                                         <th>日期</th>
                                                         <th>时间</th>
                                                         <th>车号</th>
+                                                        <th>驾驶员</th>
                                                         <th>毛重</th>
                                                         <th>皮重</th>
                                                         <th>净重</th>
@@ -110,6 +123,7 @@
                                                         <td>#(x.input_date)</td>
                                                         <td>#(x.input_time)</td>
                                                         <td>#(x.car_no)</td>
+                                                        <td>#(x.driver)</td>
                                                         <td>#(x.mao_heavy)</td>
                                                         <td>#(x.pi_heavy)</td>
                                                         <td>#(x.jin_heavy)</td>
@@ -123,7 +137,7 @@
                                 </div><!-- /span -->
                             </div><!--/hover-->
                             
-                           	#@paginate(page.pageNumber, page.totalPage, "../buyin/","form-validate")
+                           	#@paginate(page.pageNumber, page.totalPage, "../buy/","form-validate")
 
 
 <!-- javascript
@@ -140,6 +154,7 @@
         
         <!-- required stilearn template js, for full feature-->
         <script src="../js/holder.js"></script>
+        <script src="../js/stilearn-base.js"></script>
 
         <script type="text/javascript">
 	        var tableSelectedData = [];

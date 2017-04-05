@@ -2,12 +2,14 @@ package com.ims.resource;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import com.ims.common.service.SResource;
 import com.ims.role.SNode;
 import com.ims.util.StringUtil;
 import com.jfinal.core.Controller;
+import com.jfinal.plugin.activerecord.Db;
 
 /**
  *用户模块
@@ -46,7 +48,8 @@ public class ResourceController extends Controller {
 	
 	public void save() {
 		getModel(SResource.class).save();
-		renderText("操作成功");
+		setAttr("erroMsg", "操作成功");
+		renderJsp("/WEB-INF/mvcs/erroMsg.jsp");
 	}
 	
 	public void edit() {
@@ -54,14 +57,12 @@ public class ResourceController extends Controller {
 		SResource resource = SResource.dao.findById(para);
 		setAttr("sResource", resource);
 		
-		String page =  getPara("page");
-
-		if(StringUtil.isNull(page)){
-			render("/WEB-INF/mvcs/resource/resourceadd.html");
-		}else{
-			render("/WEB-INF/mvcs/resource/" + page + ".html");
-		}
-
+		
+		//查询菜单所有角色的权限
+		String sql = "select r.id,r.name,group_concat(rr.op_flg) from s_roleright rr,s_role r where r.id=rr.role_id and rr.resource_id=? group by r.id";
+		List lists = Db.query(sql, para);
+		setAttr("roleLists", lists);
+		render("/WEB-INF/mvcs/resource/resourceadd.html");
 	}
 	
 	public void update() {

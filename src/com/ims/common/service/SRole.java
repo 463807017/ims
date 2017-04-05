@@ -1,6 +1,10 @@
 package com.ims.common.service;
 
+import java.util.List;
+
 import com.ims.common.model.base.BaseSRole;
+import com.ims.util.StringUtil;
+import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 
 /**
@@ -13,4 +17,27 @@ public class SRole extends BaseSRole<SRole> {
 	public Page<SRole> paginate(int pageNumber, int pageSize,String condition) {
 		return paginate(pageNumber, pageSize, "select *", "from s_role " + condition + " order by id desc");
 	}
+	
+	public static boolean hasPrivilege(String menuId,Integer op,List<SRole> roles) {
+		if(StringUtil.isNull(menuId)) return false;
+		if(roles == null || roles.size() == 0) return false;
+		StringBuffer roleStr = new StringBuffer("select count(1) from s_roleright r where r.role_id in(");
+		for (int i = 0; i < roles.size(); i++) {
+			SRole role =  roles.get(i);
+			if(role.getIsAdmin() == 1) return true;//管理员具有所有权限
+			if(i == roles.size() - 1)
+				roleStr.append(role.getId()).append(")");
+			else
+				roleStr.append(role.getId()).append(",");
+		}
+		roleStr.append(" and r.op_flg=? and r.resource_id=?");
+		Long rightCount = Db.queryLong(roleStr.toString(), op,menuId);
+		
+		return rightCount > 0;
+	}
+	
+	public Page<SRole> paginateRoles(int pageNumber, int pageSize,String condition) {
+		return paginate(pageNumber, pageSize, "select r.id,r.name,r.descption", " from s_roleuser ru,s_role r where r.id=ru.role_id and ru.user_id=" + condition + " order by r.id desc");
+	}
+	
 }

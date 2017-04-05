@@ -1,0 +1,185 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Tables - Stilearn Admin Bootstrap</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="" />
+        <meta name="author" content="stilearning" />
+
+        <!-- google font -->
+        <link href="http://fonts.googleapis.com/css?family=Aclonica:regular" rel="stylesheet" type="text/css" />
+
+        <!-- styles -->
+        <link href="../css/bootstrap.css" rel="stylesheet" />
+        <link href="../css/bootstrap-responsive.css" rel="stylesheet" />
+        <link href="../css/stilearn.css" rel="stylesheet" />
+        <link href="../css/stilearn-responsive.css" rel="stylesheet" />
+        <link href="../css/stilearn-helper.css" rel="stylesheet" />
+        <link href="../css/stilearn-icon.css" rel="stylesheet" />
+        <link href="../css/font-awesome.css" rel="stylesheet" />
+        <link href="../css/animate.css" rel="stylesheet" />
+        <link href="../css/uniform.default.css" rel="stylesheet" />
+        
+        <link href="../css/DT_bootstrap.css" rel="stylesheet" />
+        <link href="../css/responsive-tables.css" rel="stylesheet" />
+        
+        <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+        <!--[if lt IE 9]>
+          <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
+
+    <body>
+    
+     <div id="element" class="row-fluid">
+                                        <!--span-->
+                                        <div class="span12">
+                                            <!--box-->
+                                            <div class="box corner-all" style="margin-bottom:0px;">
+                                                <!--box header-->
+                                                <div class="box-header grd-white color-silver-dark corner-top">
+                                                    <div class="header-control">
+                                                        <a data-box="collapse"><i class="icofont-caret-up"></i></a>
+                                                        <a data-box="close">&times;</a>
+                                                    </div>
+                                                    <span>查询条件</span>
+                                                </div><!--/box header-->
+                                                <!--box body-->
+                                                <div class="box-body">
+                                                    <!--element-->
+                                                    <form id="form-validate" class="form-horizontal" action="../sdic/" method="post"/>
+                                                        <div class="control-group">
+                                                            <label class="control-label" for="inputAuto">编号</label>
+                                                            <div class="controls">
+                                                                <input type="text" value="#(sDic.en)" name="sDic.en" class="grd-white"  />
+                                                            </div>
+                                                        </div>
+                                                        <div class="control-group">
+                                                            <label class="control-label" for="inputAuto">名称</label>
+                                                            <div class="controls">
+                                                                <input type="text" value="#(sDic.ch)" name="sDic.ch" class="grd-white" />
+                                                            </div>
+                                                        </div>
+                                                        <input type="hidden" value="#(sDic.op)" name="sDic.op" class="grd-white" />
+                                                        
+                                                        
+                                                        <div class="form-actions center">
+                                                        #@permission(menuId,0,roles,'
+                                                            <button type="submit" class="btn btn-primary" >查询</button>'
+                                                            )
+                                                          #@permission(menuId,1,roles,'
+                                                            <button type="button" class="btn btn-primary" onclick="doAdd()" >新增</button>')
+                                                             #@permission(menuId,2,roles,'
+                                                            <button type="button" class="btn btn-primary" onclick="doUpd()">修改</button>')
+                                                             #@permission(menuId,3,roles,'
+                                                            <button type="button" class="btn btn-primary" onclick="doDel()">删除</button>')
+                                                        </div>
+                                                    </form>
+                                                    <!--/element-->
+                                                </div><!--/box body-->
+                                            </div><!--/box-->
+                                        </div><!--/span--> 
+                                    </div><!--/element-->
+                                    
+      <!-- hover -->
+                            <div class="row-fluid">
+                                <div class="span12">
+                                    <div class="box corner-all">
+                                        <div class="box-header grd-white corner-top">
+                                            <div class="header-control">
+                                                <a data-box="collapse"><i class="icofont-caret-up"></i></a>
+                                                <a data-box="close" data-hide="bounceOutRight">&times;</a>
+                                            </div>
+                                            <span>#@dic('OP_TYPE',sDic.op)</span>
+                                        </div>
+                                        <div class="box-body">
+                                            <table id="data_list" class="table table-hover responsive">
+                                              <thead>
+                                                    <tr>
+                                                        <th>编号</th>
+                                                        <th>名称</th>
+                                                        <th>描述</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    #for(x : page.getList())
+												<tr class="gradeA">
+                                                        <td>#(x.en)</td>
+                                                        <td>#(x.ch)</td>
+                                                        <td>#(x.demo)</td>
+                                                    </tr>
+												#end
+                                                </tbody>
+                                            </table>
+                                        </div><!-- /box-body -->
+                                    </div><!-- /box -->
+                                </div><!-- /span -->
+                            </div><!--/hover-->
+                            
+                           	#@paginate(page.pageNumber, page.totalPage, "../sdic/","form-validate")
+
+
+<!-- javascript
+        ================================================== -->
+        <script src="../js/jquery.js"></script>
+        <script src="../js/bootstrap.js"></script>
+        <script src="../js/uniform/jquery.uniform.js"></script>
+        
+        <script src="../js/datatables/jquery.dataTables.min.js"></script>
+        <script src="../js/datatables/extras/ZeroClipboard.js"></script>
+        <script src="../js/datatables/extras/TableTools.min.js"></script>
+        <script src="../js/datatables/DT_bootstrap.js"></script>
+        <script src="../js/responsive-tables/responsive-tables.js"></script>
+        
+        <!-- required stilearn template js, for full feature-->
+        <script src="../js/holder.js"></script>
+        <script src="../js/stilearn-base.js"></script>
+
+        <script type="text/javascript">
+	        var tableSelectedData = [];
+	        var tableSelectedIndex = null;
+	        $(document).ready(function(){
+	        	$("#data_list tbody tr").each(function(index){
+	        		var currentEle = $(this);  
+	                currentEle.click(function(){
+	        	        if(tableSelectedIndex == index) return;
+	        	        if(tableSelectedIndex != null){
+	            	        $("#data_list tbody tr").eq(tableSelectedIndex).css("background-color","");
+	        	        }
+	                  currentEle.css("background-color","#faf2cc"); 
+	                  tableSelectedIndex = index;
+	
+	                  currentEle.children().each(function(indexTd){
+	        	          var val = $(this).text();
+	        	          tableSelectedData[indexTd] = val;
+	                  });
+	                });  
+	        	});
+	        });
+        
+        	function doAdd(){
+        		$("#form-validate").serializeArray()
+            	location.href = "sdic/add?op=#(sDic.op)";
+        	}
+
+        	function doUpd(){
+            	if(tableSelectedIndex == null){
+                	alert("请选择一条记录");
+                	return;
+            	}
+            	location.href = "sdic/edit?sDic.op=#(sDic.op)&sDic.en=" + tableSelectedData[0];
+        	}
+
+			function doDel(){
+				if(tableSelectedIndex == null){
+                	alert("请选择一条记录");
+                	return;
+            	}
+            	location.href = "sdic/delete?sDic.op=#(sDic.op)&sDic.en=" + tableSelectedData[0];
+        	}
+			
+        </script>
+    </body>
+</html>

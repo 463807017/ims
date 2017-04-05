@@ -32,31 +32,23 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
 
     <body>
+    	<div style="position: absolute;top:0px;bottom: 0px; width: 100%;">
         <!-- section header -->
         <header class="header">
             <!--nav bar helper-->
             <div class="navbar-helper">
                 <div class="row-fluid">
                     <!--panel site-name-->
-                    <div class="span2">
+                    <div class="span5">
                         <div class="panel-sitename">
-                            <h2><a href="#"><span class="color-teal">进销管理</span></a></h2>
+                            <h2><a href="#"><span class="color-teal">重庆市璧山区久合建材有限公司</span></a></h2>
                         </div>
                     </div>
                     <!--/panel name-->
 
-                    <div class="span6">
-                        <!--panel search-->
-                        <div class="panel-search">
-                            <form class="form-search" />
-                                <div class="input-icon-append">
-                                    <button type="submit" rel="tooltip-bottom" title="search" class="icon"><i class="icofont-search"></i></button>
-                                    <input class="input-large search-query grd-white" maxlength="23" placeholder="Search here..." type="text" />
-                                </div>
-                            </form>
-                        </div><!--/panel search-->
+                    <div class="span5">
                     </div>
-                    <div class="span4">
+                    <div class="span2">
                         <!--panel button ext-->
                         <div class="panel-ext">
                             <div class="btn-group">
@@ -89,15 +81,14 @@
                                             <div class="media-body description">
                                                 <p><strong>#(user.name)</strong></p>
                                                 <p class="muted">#(user.login_name)</p>
-                                                <p class="action"><a class="link" href="#">Activity</a> - <a class="link" href="#">Setting</a></p>
-                                                <a href="bonus-page/resume/index.html" class="btn btn-primary btn-small btn-block">View Profile</a>
+                                                <p class="action"><a class="link" href="javascript:toMain('user/edit?id=#(user.id)&page=detail');">个人信息</a></p>
                                             </div>
                                         </div>
                                     </li>
                                     <li class="dropdown-footer">
                                         <div>
                                             <a class="btn btn-small pull-right" href="logout/">退出</a>
-                                            <a class="btn btn-small" href="#">Add Account</a>
+                                            <a class="btn btn-small" href="javascript:toMain('user/edit?id=#(user.id)&page=updPasswd');">修改密码</a>
                                         </div>
                                     </li>
                                 </ul>
@@ -109,7 +100,7 @@
         </header>
 
         <!-- section content -->
-        <section class="section">
+        <section class="section" style="position: absolute;top:0px;bottom: 0px; width: 100%;">
             <div class="row-fluid">
                 <!-- span side-left -->
                 <div class="span1">
@@ -118,18 +109,18 @@
                         #for(resource : resources.getChilds())
                         	<ul class="sidebar">
                         		<li>
-                                <a href="javascript:toMain('#if(resource.url=='')#else resource.url#end')" title="#(resource.name)">
+                                <a href="javascript:toMain('#if(resource.url=='')#else resource.url#end','menuId=#(r2.id)')" title="#(resource.name)">
                                     <div class="badge badge-important">#(resource.getChilds().size())</div>
                                     <div class="helper-font-24">
                                         <i class="icofont-edit"></i>
                                     </div>
                                     <span class="sidebar-text">#(resource.name)</span>
                                 </a>
-                                #if(resource.getChilds().size()>0)
+                                #if(resource.getChilds() != null && resource.getChilds().size()>0)
                                 <ul class="sub-sidebar-form corner-top shadow-white">
                                 	#for(r2 : resource.getChilds())
                                 		<li>
-                                        <a href="javascript:toMain('#(r2.url)')" title="form element" class="corner-all">
+                                        <a href="javascript:toMain('#(r2.url)','menuId=#(r2.id)')" title="form element" class="corner-all">
                                             <i class="icofont-file"></i>
                                             <span class="sidebar-text">#(r2.name)</span>
                                         </a>
@@ -145,7 +136,7 @@
                 <!-- span content -->
                 <div class="span11">
                     <!-- content -->
-                    <div class="content">
+                    <div class="content" style="position: absolute;top:0px;bottom:0px;width: 92%;">
                        <iframe id="main" scrolling="auto" src="welcome.html" width="100%" height="100%" style="margin:0 0 0 0;margin-left:10px;" class="content"></iframe>
                     </div><!-- /content -->
                 </div><!-- /span content -->
@@ -156,7 +147,7 @@
         <footer>
             <a rel="to-top" href="#top"><i class="icofont-circle-arrow-up"></i></a>
         </footer>
-
+		</div>
         <!-- javascript
         ================================================== -->
         <script src="js/jquery.js"></script>
@@ -179,8 +170,13 @@
 
         <script type="text/javascript">
          
-            function toMain(url){
+            function toMain(url,menuId){
                 if(url == '') return;
+                if(menuId != null && menuId != '' && menuId != undefined)
+                if(url.indexOf('?')>-1)
+                	url += '&' + menuId;
+                else
+                	url += '?' + menuId;
                	$("#main").attr("src",url);
             };
             

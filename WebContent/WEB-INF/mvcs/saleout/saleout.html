@@ -24,6 +24,7 @@
         
         <link href="../css/DT_bootstrap.css" rel="stylesheet" />
         <link href="../css/responsive-tables.css" rel="stylesheet" />
+         <link href="../css/select2.css" rel="stylesheet" />
         
         <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
         <!--[if lt IE 9]>
@@ -68,13 +69,24 @@
                                                                 <input type="text" value="#(salesOut.driver)" name="salesOut.driver" class="grd-white" />
                                                             </div>
                                                         </div>
+                                                         <div class="control-group">
+                                                            <label class="control-label" for="inputAuto">购货方</label>
+                                                            <div class="controls">
+                                                                <input id="buyer_name" style="width:200px;" type="text" value="#(salesOut.buyer_name)" name="salesOut.driver" class="grd-white" />
+                                                            </div>
+                                                        </div>
+                                                        
                                                         <input type="hidden" value="#(salesOut.car_type)" name="salesOut.car_type" class="grd-white" />
                                                         
                                                         <div class="form-actions center">
-                                                            <button type="submit" class="btn btn-primary" >查询</button>
-                                                            <button type="button" class="btn btn-primary" onclick="doAdd()" >新增</button>
-                                                            <button type="button" class="btn btn-primary" onclick="doUpd()">修改</button>
-                                                            <button type="button" class="btn btn-primary" onclick="doDel()">删除</button>
+                                                        	#@permission(menuId,0,roles,'
+                                                            <button type="submit" class="btn btn-primary" >查询</button>')
+                                                            #@permission(menuId,1,roles,'
+                                                            <button type="button" class="btn btn-primary" onclick="doAdd()" >新增</button>')
+                                                            #@permission(menuId,2,roles,'
+                                                            <button type="button" class="btn btn-primary" onclick="doUpd()">修改</button>')
+                                                            #@permission(menuId,3,roles,'
+                                                            <button type="button" class="btn btn-primary" onclick="doDel()">删除</button>')
                                                         </div>
                                                     </form>
                                                     <!--/element-->
@@ -132,7 +144,7 @@
                                 </div><!-- /span -->
                             </div><!--/hover-->
                             
-                           	#@paginate(page.pageNumber, page.totalPage, "../saleout/","form-validate")
+                           	#@paginate(page.pageNumber, page.totalPage, "../sale/","form-validate")
 
 
 <!-- javascript
@@ -146,14 +158,31 @@
         <script src="../js/datatables/extras/TableTools.min.js"></script>
         <script src="../js/datatables/DT_bootstrap.js"></script>
         <script src="../js/responsive-tables/responsive-tables.js"></script>
-        
+         <script src="../js/select2/select2.js"></script>
         <!-- required stilearn template js, for full feature-->
         <script src="../js/holder.js"></script>
+        <script src="../js/stilearn-base.js"></script>
 
         <script type="text/javascript">
+        $(document).ready(function() {
+        	 $.ajax({
+                 type: "POST",
+                 url: "../sdic/dicJson",
+                 data: "op=BUYER",
+                 success: function(data){
+             		$("#buyer_name").select2({tags:data,multiple: false});
+                    }
+          });
+        	
+        });
+       
+        
 	        var tableSelectedData = [];
 	        var tableSelectedIndex = null;
 	        $(document).ready(function(){
+	        	
+	        	
+	            
 	        	$("#data_list tbody tr").each(function(index){
 	        		var currentEle = $(this);  
 	                currentEle.click(function(){

@@ -1,9 +1,11 @@
 package com.ims.index;
 
+import java.io.File;
 import java.util.List;
 
+import com.ims.User.UserInterceptor;
 import com.ims.common.service.SResource;
-import com.ims.common.service.SRoleuser;
+import com.ims.common.service.SRole;
 import com.ims.common.service.SUser;
 import com.ims.util.StringUtil;
 import com.jfinal.aop.Clear;
@@ -30,37 +32,49 @@ public class IndexController extends Controller {
 		}
 	}
 	
-	@Clear
+	@Clear(value=UserInterceptor.class)
 	public void login() throws Exception{
-		SUser user = getModel(SUser.class);
-		System.out.println(this.hashCode());
-		if(StringUtil.isNull(user.getLoginName())){
+		
+		String loginName = getPara("name");
+		String logPasswd = getPara("passwd");
+		if(StringUtil.isNull(loginName)){
 			throw new Exception("用户名为空");
 		}
 		SqlPara sqlPara = new SqlPara();
 		sqlPara.setSql("select * from s_user u where u.login_name=? and u.login_passwd=?");
-		sqlPara.addPara(user.getLoginName()).addPara(user.getLoginPasswd());
+		sqlPara.addPara(loginName).addPara(logPasswd);
 		
-		SUser sUser = user.dao().findFirst(sqlPara);
+		SUser sUser = new SUser();
+		sUser = sUser.dao().findFirst(sqlPara);
 		if(sUser == null){
 			throw new Exception("用户名或者密码错误");
 		}else{
 			this.setSessionAttr("user", sUser);
 			
 			//获取系统角色
-			List<SRoleuser> roles =  SRoleuser.dao.find("select * from s_roleuser r where r.user_id=?", sUser.getId());
+			List<SRole> roles =  SRole.dao.find("select * from s_role r where r.id in (select role_id from s_roleuser where user_id=?)", sUser.getId());
+			//如果其中有系统管理员
 			this.setSessionAttr("roles", roles);
+			setSessionAttr("admin",2);
+
+			
 			if(roles != null && roles.size() > 0){
 				//查询到角色
-				StringBuffer roleStr = new StringBuffer("select * from s_resource r where r.id in (select resource_id from s_roleright where role_id in(");
+				StringBuffer roleStr = new StringBuffer();
+				boolean isAdmin = false;
 				for (int i = 0; i < roles.size(); i++) {
-					SRoleuser roleuser =  roles.get(i);
+					SRole role =  roles.get(i);
+					if(role.getIsAdmin() == 1) {
+						isAdmin = true;
+						setSessionAttr("admin", 1);
+						break;
+					}
+					if(i==0) roleStr.append(" role_id in(");
 					if(i == roles.size() - 1)
-						roleStr.append(roleuser.getRoleId()).append(")");
+						roleStr.append(role.getId()).append(")");
 					else
-						roleStr.append(roleuser.getRoleId()).append(",");
+						roleStr.append(role.getId()).append(",");
 				}
-				roleStr.append(" and op_flg=0) and parent_id=? order by order_id desc");//0 表示访问权限
 				
 				
 				SResource resources = new SResource();
@@ -68,7 +82,11 @@ public class IndexController extends Controller {
 				resources.setName("root");
 				resources.setLevel(0);
 				
-				resources =  SResource.dao.findTrees(roleStr.toString(), 0L,resources);//根目录id为0
+				StringBuffer roleSql= new StringBuffer("select * from s_resource r where ");
+				if(!isAdmin) roleSql.append(" r.id in (select resource_id from s_roleright where ").append(roleStr).append(" and op_flg=0) and");//非管理员
+				roleSql.append(" parent_id=? order by order_id desc");//0 表示访问权限
+
+				resources =  SResource.dao.findTrees(roleSql.toString(), 0L,resources);//根目录id为0
 				setSessionAttr("resources", resources);
 
 			}else{
@@ -85,7 +103,8 @@ public class IndexController extends Controller {
 	@Clear
 	public void logout() throws Exception{
 		if(this.getSession() != null) this.getSession().invalidate();
-		renderText("退出成功");
+		setAttr("erroMsg", "退出成功");
+		renderJsp("/WEB-INF/mvcs/erroMsg.jsp");
 	}
 }
 

@@ -34,7 +34,7 @@ public class SDicController extends Controller {
 			}
 			
 		}
-		setAttr("page", SDic.dao.paginate(getParaToInt(0, 1), 5,condition.toString()));
+		setAttr("page", SDic.dao.paginate(getParaToInt(0, 1), 1,condition.toString()));
 		render("/WEB-INF/mvcs/sdic/sdic.html");
 	}
 	

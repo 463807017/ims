@@ -161,7 +161,7 @@
         
         	function doAdd(){
         		$("#form-validate").serializeArray()
-            	location.href = "sdic/add?op=#(sDic.op)";
+            	location.href = "/sdic/add?op=#(sDic.op)";
         	}
 
         	function doUpd(){
@@ -169,7 +169,7 @@
                 	alert("请选择一条记录");
                 	return;
             	}
-            	location.href = "sdic/edit?sDic.op=#(sDic.op)&sDic.en=" + tableSelectedData[0];
+            	location.href = "/sdic/edit?sDic.op=#(sDic.op)&sDic.en=" + tableSelectedData[0];
         	}
 
 			function doDel(){
@@ -177,7 +177,7 @@
                 	alert("请选择一条记录");
                 	return;
             	}
-            	location.href = "sdic/delete?sDic.op=#(sDic.op)&sDic.en=" + tableSelectedData[0];
+            	location.href = "/sdic/delete?sDic.op=#(sDic.op)&sDic.en=" + tableSelectedData[0];
         	}
 			
         </script>

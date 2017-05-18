@@ -1,0 +1,58 @@
+#define paginate(currentPage, totalPage, link,form)
+	#if(currentPage==null || totalPage==null ||totalPage <= 0 || currentPage > totalPage ) #return #end
+	#setLocal(startPage = currentPage - 4)
+	#if (startPage < 1) #setLocal(startPage = 1) #end
+	
+	#setLocal(endPage = currentPage + 4)
+	#if (endPage > totalPage) #setLocal(endPage = totalPage) #end
+ <script type="text/javascript">
+			function doQuery(url){
+				var form = $("##(form)");
+				form.attr("action",url);
+				form.submit();
+			}
+        </script>
+<div class="dataTables_paginate paging_bootstrap pagination">
+<ul>
+			#if (currentPage <= 8)
+				#setLocal(startPage = 1)
+			#end
+			#if ((totalPage - currentPage) < 8)
+				#setLocal(endPage = totalPage)
+			#end
+			
+			#if (currentPage == 1)
+				<li class="prev disabled"><a href="#">上一页</a></li>
+			#else
+				<li class="prev "><a href="javascript:doQuery('#(link)#(currentPage - 1)')">上一页</a></li>
+			#end
+			
+			#if (currentPage > 8)
+				<li class="actived"><a href="javascript:doQuery('#(link)#(1)')">#(1)</a></li>
+				<li class="actived"><a href="javascript:doQuery('#(link)#(2)')">#(2)</a></li>
+				<li class="actived"><a href="javascript:doQuery('#(link)#(3)')">#(3)</a></li>
+				<li class="actived"><a href="#">....</a></li>
+			#end
+			
+			#for(i : [startPage..endPage])
+				#if (currentPage == i)
+					<li class="active"><a href="#">#(i)</a></li>
+				#else
+					<li class="actived"><a href="javascript:doQuery('#(link)#(i)')">#(i)</a></li>
+				#end
+			#end
+			
+			#if ((totalPage - currentPage) >= 8)
+				<li class="active"><a href="#">...</a></li>
+				<li class="actived"><a href="javascript:doQuery('#(link)#(totalPage - 1)')">#(totalPage - 1)</a></li>
+				<li class="actived"><a href="javascript:doQuery('#(link)#(totalPage)')">#(totalPage)</a></li>
+			#end
+			
+			#if (currentPage == totalPage)
+				<li class="next disabled"><a href="#">下一页</a></li>
+			#else
+				<li class="next "><a href="javascript:doQuery('#(link)#(currentPage + 1)')">下一页</a></li>
+			#end
+	</ul>
+</div>
+#end

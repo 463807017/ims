@@ -93,7 +93,7 @@ public class Scope {
 				
 				HttpServletRequest  request = (HttpServletRequest)cur.data.get("request");
 				//先从url参数中获取  在从request中获取 session中获取
-				if(request == null) break;
+				if(request == null) continue;
 				ret = request.getParameter((String)key);
 				if(ret != null) return ret;
 				ret = request.getAttribute((String)key);
